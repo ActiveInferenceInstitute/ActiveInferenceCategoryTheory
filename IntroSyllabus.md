@@ -75,6 +75,7 @@ Introductions to category theory, how it is used in Active Inference, and first 
 **Readings and Videos:**
     1. Cheng: Prologue, Chapter 1 ([Chapter 1](https://youtu.be/zW-RGn1hrk4) of the book club on YouTube)
     2. St. Clere Smithe: Abstract, Chapter 1
+    
 **Activities:**
     1. *Getting to know terms.* Play with the terms in the Abstract and Chapter 1 of St. Clere Smithe however your brain works best. The goal is to become familiar with the words, not to know what them mean yet. List them on various different pieces of paper and color them in, make a spreadsheet or table. Form hypotheses of how they connect with what you already know. 
 
