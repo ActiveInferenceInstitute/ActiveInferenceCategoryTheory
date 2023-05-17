@@ -37,6 +37,7 @@ It sometimes takes an approach that involves multiple readings of the same chapt
 4. Higher Category Theory (25%)
 5. Connections (20%)
 6. Pathways Forward (10%)
+7. Applying in the variability-retained world (?%)
 
 There are various levels of understanding that may form student expectations. If a student is content with a first pass and exposure to the topics, the syllabus may be completed in ten months. If the student wishes to go deeper, one to two years of more weekly hours may be a more accurate estimate.
 
