@@ -1,3 +1,5 @@
 # ActiveInferenceCategoryTheory
-Active Inference &amp; Category Theory
-Learn about and explore where active inference and category meet
+Active Inference & Category Theory
+Learn about and explore where Active Inference and Category Theory meet
+
+See IntroSyllabus.md for the curriculum! 
