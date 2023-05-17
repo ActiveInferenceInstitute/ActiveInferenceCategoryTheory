@@ -73,11 +73,11 @@ Other resources are in the eponymous section below.
 Introductions to category theory, how it is used in Active Inference, and first exposure to category theory applied to neuroscience
 
 **Readings and Videos:**
-    1. Cheng: Prologue, Chapter 1 ([Chapter 1](https://youtu.be/zW-RGn1hrk4) of the book club on YouTube)
-    2. St. Clere Smithe: Abstract, Chapter 1
+1. Cheng: Prologue, Chapter 1 ([Chapter 1](https://youtu.be/zW-RGn1hrk4) of the book club on YouTube)
+2. St. Clere Smithe: Abstract, Chapter 1
     
 **Activities:**
-    1. *Getting to know terms.* Play with the terms in the Abstract and Chapter 1 of St. Clere Smithe however your brain works best. The goal is to become familiar with the words, not to know what them mean yet. List them on various different pieces of paper and color them in, make a spreadsheet or table. Form hypotheses of how they connect with what you already know. 
+1. *Getting to know terms.* Play with the terms in the Abstract and Chapter 1 of St. Clere Smithe however your brain works best. The goal is to become familiar with the words, not to know what them mean yet. List them on various different pieces of paper and color them in, make a spreadsheet or table. Form hypotheses of how they connect with what you already know.
 
 ## Foundations
 
@@ -86,14 +86,14 @@ Building intuition for basic category theory, reconnaissance of application to a
 **Topics:** To be discovered in Story Map Light Sketch Activity
 
 **Readings and Videos:**
-  1. Cheng: Chapters 2-8, watch corresponding book club videos ([Chapter 2](https://youtu.be/C6A8tqGsQWM) and onwards on YouTube), Appendices A, B, and C whenever referenced in text
-  2. St. Clere Smithe: Chapters 2-6, first pass: ***only the informal discussions***. This means: skip the formulas, definitions, propositions, proofs, and diagrams.
-  3. Livestream #054.0 ([on YouTube](https://www.youtube.com/watch?v=HK9ZkbxieLY)) (5/31/2023)
-  4. OPTIONAL: Cheng, E. (2015, 2016) How to Bake Pi, for background on mathematics (Chapters 1-8) and category theory intution presented less formally (Chapters 9-15)
+1. Cheng: Chapters 2-8, watch corresponding book club videos ([Chapter 2](https://youtu.be/C6A8tqGsQWM) and onwards on YouTube), Appendices A, B, and C whenever referenced in text
+2. St. Clere Smithe: Chapters 2-6, first pass: ***only the informal discussions***. This means: skip the formulas, definitions, propositions, proofs, and diagrams.
+3. Livestream #054.0 ([on YouTube](https://www.youtube.com/watch?v=HK9ZkbxieLY)) (5/31/2023)
+4. OPTIONAL: Cheng, E. (2015, 2016) How to Bake Pi, for background on mathematics (Chapters 1-8) and category theory intution presented less formally (Chapters 9-15)
 
 **Activities:**
-  1. *Beginning to think categorically.* Attempt the Things to Think About in Cheng
-  2. *Story map, light sketch.* Follow the story that St. Clere Smithe is trying to tell by skteching a map. What looks familiar from your previous/concurrent study of Active Inference? What are the main mathematical constructions he uses and how do they fit together? That is, what notions lead to what other notions? This is a sketch. (Hint: Draw in pencil a directed graph connecting notions that stand out for you. Use different colors, shapes, and images if so moved. If it helps, set a time limit and stick to it - there wil be more time to expand and fill in details later.)
+1. *Beginning to think categorically.* Attempt the Things to Think About in Cheng
+2. *Story map, light sketch.* Follow the story that St. Clere Smithe is trying to tell by skteching a map. What looks familiar from your previous/concurrent study of Active Inference? What are the main mathematical constructions he uses and how do they fit together? That is, what notions lead to what other notions? This is a sketch. (Hint: Draw in pencil a directed graph connecting notions that stand out for you. Use different colors, shapes, and images if so moved. If it helps, set a time limit and stick to it - there wil be more time to expand and fill in details later.)
 
 ## Basic Category Theory
 
