@@ -78,7 +78,7 @@ Introductions to category theory, how it is used in Active Inference, and first 
 2. St. Clere Smithe: Abstract, Chapter 1
     
 **Activities:**
-1. *Getting to know terms.* Play with the terms in the Abstract and Chapter 1 of St. Clere Smithe however your brain works best. The goal is to become familiar with the words, not to know what them mean yet. List them on various different pieces of paper and color them in, make a spreadsheet or table. Form hypotheses of how they connect with what you already know.
+1. *Getting to know terms.* Play with the terms in the Abstract and Chapter 1 of St. Clere Smithe however your brain works best. The goal is to become familiar with the words, not to know what they mean yet. List them on various different pieces of paper and color them in, make a spreadsheet or table. Form hypotheses of how they connect with what you already know.
 
 ## Foundations
 
@@ -118,7 +118,7 @@ Basic category theory and introduction to 2-categories
 
 Higher category theoretical concepts and ramp-up into Bayesian inference. 
 
-*(Note: I don't know whether a "strict" delineation between basic and higher category theory is, the header distinction is to help keep the syllabus organized)*
+*(Note: I don't know whether a "strict" delineation between basic and higher category theory is agreed upon or what it might be--the header distinction is here to help keep the syllabus organized)*
 
 **Topics:**
 
