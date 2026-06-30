@@ -1,0 +1,46 @@
+# AII sidecar — InstituteOS metadata. Schema: instituteos.platform.aii_sidecar
+meta:
+  updated: '2026-06-30'
+repo:
+  name: ActiveInferenceCategoryTheory
+  slug: activeinferencecategorytheory
+  full_name: ActiveInferenceInstitute/ActiveInferenceCategoryTheory
+  description: Active Inference & Category Theory
+institute:
+  category: research-software
+  maturity: released
+  steward: Active Inference Institute
+ecosystem:
+  relations:
+  - repo: ActiveInferenceInstitute/InstituteOS
+    relation: referenced-by
+    note: Federated via the InstituteOS .aii manifest.
+  - repo: ActiveInferenceInstitute/Active_Inference_Ontology
+    note: Uses Active Inference Ontology terms.
+  links:
+    github: https://github.com/ActiveInferenceInstitute/ActiveInferenceCategoryTheory
+    website: https://www.activeinference.org
+artifacts:
+- path: README.md
+  kind: doc
+  description: Repository overview.
+- path: LICENSE
+  kind: doc
+  description: License.
+provenance:
+  license: CC0-1.0
+  citation:
+    text: Active Inference Institute — ActiveInferenceCategoryTheory.
+instituteos:
+  tags:
+  - active
+  - active-inference
+  - category
+  - category-theory
+  - inference
+capabilities:
+- documentation
+tasks:
+  inventory:
+    cmd: git ls-files
+    description: List tracked files.
