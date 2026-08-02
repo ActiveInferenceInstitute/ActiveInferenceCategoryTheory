@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this repository in your work, please cite it as below."
+title: "ActiveInferenceCategoryTheory"
+abstract: "Active Inference & Category Theory — a curriculum repository of the Active Inference Institute for learning about and exploring where Active Inference and Category Theory meet."
+authors:
+  - name: "Active Inference Institute"
+    website: "https://www.activeinference.org"
+license: "CC0-1.0"
+date-released: "2023-05-12"
+url: "https://github.com/ActiveInferenceInstitute/ActiveInferenceCategoryTheory"
+keywords:
+  - active inference
+  - category theory
+  - curriculum
+  - education
