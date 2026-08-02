@@ -1,6 +1,6 @@
 # AII sidecar — InstituteOS metadata. Schema: instituteos.platform.aii_sidecar
 meta:
-  updated: '2026-06-30'
+  updated: '2026-08-02'
 repo:
   name: ActiveInferenceCategoryTheory
   slug: activeinferencecategorytheory
@@ -24,6 +24,15 @@ artifacts:
 - path: README.md
   kind: doc
   description: Repository overview.
+- path: IntroAdventureSyllabus.md
+  kind: doc
+  description: Adventure-mode curriculum for category theory applied to active inference.
+- path: CONTRIBUTING.md
+  kind: doc
+  description: Contribution guide.
+- path: CITATION.cff
+  kind: citation
+  description: Machine-readable citation metadata.
 - path: LICENSE
   kind: doc
   description: License.
