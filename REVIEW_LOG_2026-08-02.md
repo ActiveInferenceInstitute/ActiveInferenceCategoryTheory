@@ -44,8 +44,21 @@ Docs-deep review pass for ActiveInferenceCategoryTheory (public submodule of Act
 
 ## Phase 3 — Implementation log
 
-(To be filled in as commits land.)
+All items implemented and committed on `main` (branch: main):
+
+1. `7041baf` docs: polish IntroAdventureSyllabus — fix typos, dead links, and heading structure
+2. `b0ac3e5` docs: expand README with contents, license, and citation info
+3. `83f3932` docs: add contributing guide and citation metadata (CONTRIBUTING.md, CITATION.cff)
+4. `dc27874` chore: align InstituteOS sidecar artifacts with repository contents (.aii/config.yaml)
+5. `6142e53` docs: add review TODO and log for docs-deep pass (TO-DO.md, REVIEW_LOG)
+
+Verification notes:
+- The paper title "Generalized Notation Notation for Active Inference Models" was verified on Zenodo — it is the real published title, so the "Notation Notation" text was deliberately left unchanged.
+- Replacement links verified: https://www.activeinference.org/education renders (Firecrawl); https://zenodo.org/records/7803328 resolves (Firecrawl; curl is bot-blocked); old textbook-group sign-up URL fails to render → replaced.
+- 403s from curl on math.jhu.edu, tandfonline, zenodo are bot-blocks on real resources — left unchanged.
+- No code, tests, or CI exist in this repo — nothing to run; docs-only pass.
 
 ## Phase 4 — Final verification
 
-(To be filled in at the end.)
+- Final sweeps: heading structure (single H1, H2/H3 hierarchy), TOC anchors match GitHub slugs, no trailing whitespace, YAML validity (sidecar via linter, CITATION.cff via ruby YAML parse), leftover-typo grep clean, git status contains only intended files.
+- 6 commits total on main (5 feature + 1 log finalize); pushed to origin/main; working tree clean.
