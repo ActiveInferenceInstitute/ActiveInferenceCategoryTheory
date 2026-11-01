@@ -165,6 +165,7 @@ Tying together Active Inference and category theory
   1. Parr, T., Markovic, D., Kiebel, S., and Friston, K. (2019) “Neuronal message passing using mean-field, Bethe, and Marginal approximations” ([link to paper](https://pubmed.ncbi.nlm.nih.gov/30760782/))
   2. Smékal, J. and Friedman, D.A. (2023) “Generalized Notation Notation for Active Inference Models.” ([link to paper](https://zenodo.org/records/7803328))
   3. Smith, R., Friston, R., and Whyte, C. (2022) “A step-by-step tutorial on active inference and its application to empirical data.” *Journal of Mathematical Psychology* ([link to paper](https://linkinghub.elsevier.com/retrieve/pii/S0022249621000973)) and associated [ModelStream #001.1](https://www.youtube.com/watch?v=H5AolqFl2Nw&t=1096s): "A Step-by-Step Tutorial on Active Inference"
+  4. A GNN scaffold for this activity: [Map the Model](gnn/map_the_model.md) - a small runnable model written in the notation of Smékal and Friedman, plus a starting correspondence between the category-theoretic notions and the specification sections, and where that correspondence runs out.
 
 ### Pathways forward
 
