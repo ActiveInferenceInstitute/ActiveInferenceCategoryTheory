@@ -28,6 +28,15 @@ Findings from the docs-deep review pass, scoped by severity:
 
 - [x] ✓ Cross-cutting documentation-system pass: verified every external link in the repo (35 unique URLs, live HTTP checks), made all docs mutually consistent (README ↔ syllabus ↔ CONTRIBUTING ↔ CITATION.cff ↔ LICENSE ↔ sidecar), and added a review TODO/log convention for future passes (see `REVIEW_LOG_2026-08-02.md`) — commits `7041baf`…`6142e53`
 
+## Additions
+
+### 2026-11-01 — GNN materials for the Connections unit
+
+- [x] ✓ Add `gnn/` (README, walk-through, model specification) and link it as item 4 of the *Map the model* activity in `IntroAdventureSyllabus.md`; list it in `README.md` and align the InstituteOS sidecar artifacts and `meta.updated`.
+- [x] ✓ Rename the walk-through to `gnn/map_the_model.template.md` (the GNN pipeline's `*.template.md` marker for non-model Markdown) after a directory-level run picked it up as a model and reported it invalid; a repeat run pointed at `gnn/` parses exactly one model source with no errors.
+- [ ] Re-verify the GNN references in `gnn/` when the pinned revision moves: the specification was parsed and type-checked against GNN v5.0.3 (commit `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`), and the walk-through quotes that run's counts.
+- [ ] Re-check the hand-computed posteriors in `gnn/map_the_model.template.md` if the parameterization in `gnn/learner_perception_model.md` changes.
+
 ## Open / deferred
 
 - SECURITY.md — deferred: not meaningful for a docs-only curriculum repository (no code, no security-contact surface).

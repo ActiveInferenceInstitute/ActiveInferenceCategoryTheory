@@ -1,6 +1,6 @@
 # AII sidecar — InstituteOS metadata. Schema: instituteos.platform.aii_sidecar
 meta:
-  updated: '2026-08-02'
+  updated: '2026-11-01'
 repo:
   name: ActiveInferenceCategoryTheory
   slug: activeinferencecategorytheory
@@ -27,6 +27,15 @@ artifacts:
 - path: IntroAdventureSyllabus.md
   kind: doc
   description: Adventure-mode curriculum for category theory applied to active inference.
+- path: gnn/README.md
+  kind: doc
+  description: GNN materials for the Map the model activity.
+- path: gnn/map_the_model.template.md
+  kind: doc
+  description: Walk-through mapping category-theoretic notions onto a GNN model specification.
+- path: gnn/learner_perception_model.md
+  kind: doc
+  description: Two-state GNN perception model of the reader, parsed and type-checked against GNN v5.0.3.
 - path: CONTRIBUTING.md
   kind: doc
   description: Contribution guide.
