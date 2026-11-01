@@ -5,16 +5,22 @@
 specification declares its variables and dimensions, what connects to what, the
 parameters, and the equations, in named sections a program can read.
 
-These two files support the *Map the model* activity in the
+These files support the *Map the model* activity in the
 [Connections unit](../IntroAdventureSyllabus.md#connections):
 
-- **[map_the_model.md](map_the_model.md)** — the exercise: how to read a
-  specification, a starting correspondence between category-theoretic notions
-  and GNN sections, a hand-worked perception update, and how to run your own
-  model.
+- **[map_the_model.template.md](map_the_model.template.md)** — the exercise: how
+  to read a specification, a starting correspondence between category-theoretic
+  notions and GNN sections, a hand-worked perception update, and how to run your
+  own model.
 - **[learner_perception_model.md](learner_perception_model.md)** — a two-state
   perception model of the reader, written in GNN section order. It is the anchor
   you map onto and then argue with.
+
+The walk-through is named with the GNN pipeline's `*.template.md` marker for
+non-model Markdown, so `learner_perception_model.md` is the only model source a
+directory-level parse picks up (the pipeline's own discovery predicate also
+excludes `README.md`). That keeps the verification command below free of
+"invalid file" noise from this prose.
 
 The point of the exercise is not that category theory reduces to a matrix
 specification. It is the opposite: writing the model down shows exactly which of
@@ -32,10 +38,11 @@ python src/gnn/main.py --only-steps "3,5" \
   --output-dir output
 ```
 
-Result of that run: step 3 parsed 1 file with 0 failures and serialized 22
-formats; step 5 reported the model valid with 0 errors, 0 warnings and 21
-parameters. The hand-computed posteriors in the walk-through were re-checked
-independently against the parameterization in the file.
+Result of that run, pointed at this directory: step 3 parsed 1 file with 0
+failures and serialized 22 formats; step 5 reported the model valid with 0
+errors, 0 warnings and 21 parameters. The hand-computed posteriors in the
+walk-through were re-checked independently against the parameterization in the
+file.
 
 ## License
 

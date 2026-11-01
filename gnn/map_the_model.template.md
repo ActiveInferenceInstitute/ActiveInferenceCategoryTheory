@@ -17,6 +17,10 @@ studying does not fit into a generative model at all.
 - Background: Smékal, J. and Friedman, D. A. (2023) [Generalized Notation
   Notation for Active Inference Models](https://zenodo.org/records/7803328)
 
+This file carries the GNN pipeline's `*.template.md` marker for non-model
+Markdown, so pointing the pipeline at this directory parses exactly one model
+source, `learner_perception_model.md`.
+
 ## 1. Read the specification
 
 Open [learner_perception_model.md](learner_perception_model.md). It declares a
@@ -100,10 +104,11 @@ parse and type-check a directory of specifications:
 python src/gnn/main.py --only-steps "3,5" --target-dir path/to/gnn --output-dir output
 ```
 
-The specification shipped here was checked this way against the GNN v5.0.3
-implementation (commit `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`): step 3
-parsed it and serialized 22 formats with no parse failures, and step 5 reported
-it valid with 0 errors, 0 warnings and 21 parameters.
+The specification shipped here was checked that way against the GNN v5.0.3
+implementation (commit `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`): pointed at
+this directory, step 3 parsed 1 model file and serialized 22 formats with no
+parse failures, and step 5 reported the model valid with 0 errors, 0 warnings
+and 21 parameters.
 
 ## Provenance and license
 

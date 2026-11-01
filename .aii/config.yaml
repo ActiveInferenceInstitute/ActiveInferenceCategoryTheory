@@ -30,7 +30,7 @@ artifacts:
 - path: gnn/README.md
   kind: doc
   description: GNN materials for the Map the model activity.
-- path: gnn/map_the_model.md
+- path: gnn/map_the_model.template.md
   kind: doc
   description: Walk-through mapping category-theoretic notions onto a GNN model specification.
 - path: gnn/learner_perception_model.md
