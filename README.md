@@ -17,3 +17,5 @@ If you use this repository in your work, please cite it as:
 > Active Inference Institute. *Active Inference & Category Theory*. https://github.com/ActiveInferenceInstitute/ActiveInferenceCategoryTheory
 
 Machine-readable citation metadata is available in [CITATION.cff](CITATION.cff).
+
+[broken control link](does-not-exist.md)
