@@ -17,3 +17,15 @@ If you use this repository in your work, please cite it as:
 > Active Inference Institute. *Active Inference & Category Theory*. https://github.com/ActiveInferenceInstitute/ActiveInferenceCategoryTheory
 
 Machine-readable citation metadata is available in [CITATION.cff](CITATION.cff).
+
+## Documentation gate
+
+[`.github/workflows/docs.yml`](.github/workflows/docs.yml) runs
+[`.github/scripts/check_docs.py`](.github/scripts/check_docs.py) on every pull
+request and on pushes to `main`. The gate fails, with exit code 1, when a
+relative Markdown link or image does not resolve, when a tracked YAML file does
+not parse, or when `CITATION.cff` lacks `cff-version`, `title` or `license`.
+The proof that it can fail is run 41720066280, job `links and metadata`: the log
+line `README.md: missing link target: does-not-exist.md` is followed by
+`##[error]Process completed with exit code 1.` Reproduce it locally with
+`python .github/scripts/check_docs.py`.
