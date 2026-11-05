@@ -9,6 +9,70 @@ permissions:
   contents: read
 
 jobs:
+  gnn-conformance:
+    name: gnn conformance (pinned)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: Install pinned GNN parser
+        run: |
+          python -m pip install --disable-pip-version-check defusedxml psutil pyyaml
+          python - <<'PY'
+          import json
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          pin = json.loads(Path(".github/gnn-pin.json").read_text(encoding="utf-8"))
+          assert pin["repository"] == "ActiveInferenceInstitute/Generalized_Notation_Notation"
+          spec = (
+              "generalized-notation-notation @ "
+              f"git+https://github.com/{pin['repository']}.git@{pin['revision']}"
+          )
+          subprocess.check_call(
+              [sys.executable, "-m", "pip", "install", "--disable-pip-version-check", "--no-deps", spec]
+          )
+          PY
+      - name: Parse and type-check the GNN model
+        run: |
+          python - <<'PY'
+          import json
+          import shutil
+          import tempfile
+          from pathlib import Path
+
+          from gnn import __version__
+          from gnn.parsers.basic import parse_gnn_formal, validate_gnn_syntax
+          from gnn.type_checker import GNNTypeChecker
+
+          pin = json.loads(Path(".github/gnn-pin.json").read_text(encoding="utf-8"))
+          expected_version = pin["tag"].removeprefix("v")
+          if __version__ != expected_version:
+              raise SystemExit(f"installed GNN {__version__!r} does not match {pin['tag']!r}")
+
+          model = Path("gnn/learner_perception_model.md")
+          parsed = parse_gnn_formal(model)
+          if parsed is None or getattr(parsed, "parse_errors", None):
+              raise SystemExit(f"{model.name} did not parse cleanly")
+          valid, errors = validate_gnn_syntax(model.read_text(encoding="utf-8"))
+          if not valid:
+              raise SystemExit(f"{model.name} syntax errors: {errors!r}")
+
+          with tempfile.TemporaryDirectory(prefix="category-theory-gnn-") as output_dir:
+              model_dir = Path(output_dir) / "models"
+              model_dir.mkdir()
+              shutil.copy(model, model_dir / model.name)
+              if not GNNTypeChecker().validate_gnn_files(model_dir, Path(output_dir)):
+                  raise SystemExit("GNN type checker rejected the learner perception model")
+
+          print(json.dumps({"gnn-version": __version__, "result": "verified"}, sort_keys=True))
+          PY
+
   links-and-metadata:
     name: links and metadata
     runs-on: ubuntu-latest
