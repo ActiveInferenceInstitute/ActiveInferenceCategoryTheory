@@ -27,5 +27,11 @@ relative Markdown link or image does not resolve, when a tracked YAML file does
 not parse, or when `CITATION.cff` lacks `cff-version`, `title` or `license`.
 The proof that it can fail is run 41720066280, job `links and metadata`: the log
 line `README.md: missing link target: does-not-exist.md` is followed by
-`##[error]Process completed with exit code 1.` Reproduce it locally with
-`python .github/scripts/check_docs.py`.
+`##[error]Process completed with exit code 1.`
+
+Reproduce it locally — the gate's only dependency is PyYAML:
+
+```bash
+python -m pip install pyyaml==6.0.2
+python .github/scripts/check_docs.py
+```

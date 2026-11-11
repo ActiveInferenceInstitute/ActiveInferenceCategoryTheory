@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   gnn-conformance:
     name: gnn conformance (pinned)
@@ -74,6 +78,7 @@ jobs:
           PY
 
   links-and-metadata:
+    timeout-minutes: 60
     name: links and metadata
     runs-on: ubuntu-latest
     steps:

@@ -1,0 +1,11 @@
+{
+  "schema": "aii-readiness/v1",
+  "repo": "ActiveInferenceInstitute/ActiveInferenceCategoryTheory",
+  "tier": "python-library",
+  "standard_version": "1.0.0",
+  "baseline": {
+    "commit": "95ba75f99c9e08f2b7e0757dbe73287ed8012bac",
+    "measured_at": "2026-11-10"
+  },
+  "waivers": []
+}
