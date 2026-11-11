@@ -1,7 +1,7 @@
 # AII sidecar — InstituteOS metadata. Schema: aii_platform.aii_sidecar
 meta:
   sidecar_version: 1.2.1
-  updated: '2026-11-10'
+  updated: '2026-11-11'
 repo:
   name: ActiveInferenceCategoryTheory
   slug: activeinferencecategorytheory
@@ -19,8 +19,10 @@ ecosystem:
     relation: referenced-by
     note: Federated via the InstituteOS .aii manifest.
   - repo: ActiveInferenceInstitute/Active_Inference_Ontology
+    relation: references
     note: Uses Active Inference Ontology terms.
   - repo: ActiveInferenceInstitute/Generalized_Notation_Notation
+    relation: references
     note: Uses Generalized Notation Notation (GNN) for model specifications.
   links:
     github: https://github.com/ActiveInferenceInstitute/ActiveInferenceCategoryTheory

@@ -40,5 +40,7 @@ Findings from the docs-deep review pass, scoped by severity:
 ## Open / deferred
 
 - SECURITY.md — deferred: not meaningful for a docs-only curriculum repository (no code, no security-contact surface).
-- No test suite / CI to run — repo contains documentation only; nothing to execute.
+- No unit-test suite — the repo is documentation only. The docs gate
+  (`.github/scripts/check_docs.py`, run by `.github/workflows/docs.yml`) is the
+  only executable check; it needs PyYAML and no network.
 - Historical commit e02d5b5 message says "CC-BY-4.0" while the LICENSE is CC0 1.0 Universal — history cannot be rewritten; current files are consistent (LICENSE = CC0, sidecar `license: CC0-1.0`).

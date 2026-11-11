@@ -17,6 +17,11 @@ Active Inference & Category Theory — an Active Inference Institute repository 
 | Task | Command | Working directory |
 | --- | --- | --- |
 | `inventory` | `git ls-files` | `.` |
+| `docs` | `python .github/scripts/check_docs.py` | `.` |
+
+The `docs` gate checks relative Markdown links and images, tracked YAML, and the
+`CITATION.cff` metadata fields. Its only dependency is PyYAML
+(`python -m pip install pyyaml==6.0.2`); it needs no network and no Lean toolchain.
 
 ## InstituteOS sidecar
 
