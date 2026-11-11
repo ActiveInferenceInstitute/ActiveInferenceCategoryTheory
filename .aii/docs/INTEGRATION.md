@@ -47,6 +47,10 @@
 | `CITATION.cff` | `citation` | Machine-readable citation metadata. |
 | `LICENSE` | `doc` | License. |
 | `AGENTS.md` | `doc` | Agent guidance. |
+| `docs/README.md` | `doc` | Documentation index for the repository. |
+| `docs/repository-layout.md` | `doc` | Map of the tracked tree and its source-versus-generated status. |
+| `docs/gnn-materials.md` | `doc` | The GNN model, walk-through, and pinned conformance workflow. |
+| `docs/validation.md` | `doc` | The offline documentation gate and how to run it. |
 
 ## Portable tasks
 

@@ -10,6 +10,9 @@ Active Inference & Category Theory — an Active Inference Institute repository 
 - Keep private content in private repositories; never commit credentials,
   personal data, or unverified claims.
 - Read [`README.md`](README.md) first, then the nearest nested `AGENTS.md`.
+- Documentation lives in [`docs/`](docs/README.md) (index, repository layout,
+  GNN workflow, validation) and in [`gnn/`](gnn/README.md); the curriculum is
+  [`IntroAdventureSyllabus.md`](IntroAdventureSyllabus.md).
 - Prefer small, verified changes; run the declared tasks before handing work back.
 
 ## Tasks

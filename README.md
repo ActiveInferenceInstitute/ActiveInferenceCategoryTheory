@@ -5,6 +5,7 @@
 ## Contents
 
 - [IntroAdventureSyllabus.md](IntroAdventureSyllabus.md) — *Introduction to Category Theory applied to Active Inference, Adventure Mode*: a self-paced, "adventure mode" curriculum for reading and researching active-inference papers that use category-theoretic tools. For those who seek a nonlinear, jump-right-into-the-deep-end experience.
+- [docs/](docs/README.md) — documentation index: repository layout, the GNN conformance workflow, and the documentation gate, alongside links to every other document.
 - [gnn/](gnn/README.md) — GNN (Generalized Notation Notation) materials for the *Map the model* activity: a small runnable model specification and a walk-through that maps category-theoretic notions onto a generative-model notation, and marks where the mapping runs out. Repositories that consume the notation follow the [GNN downstream adoption guide](https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation/blob/main/docs/gnn/integration/downstream_adoption.md).
 - [CONTRIBUTING.md](CONTRIBUTING.md) — how to propose improvements to the curriculum.
 - [LICENSE](LICENSE) — CC0 1.0 Universal (public-domain dedication).

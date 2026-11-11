@@ -56,6 +56,18 @@ artifacts:
 - path: AGENTS.md
   kind: doc
   description: Agent guidance.
+- path: docs/README.md
+  kind: doc
+  description: Documentation index for the repository.
+- path: docs/repository-layout.md
+  kind: doc
+  description: Map of the tracked tree and its source-versus-generated status.
+- path: docs/gnn-materials.md
+  kind: doc
+  description: The GNN model, walk-through, and pinned conformance workflow.
+- path: docs/validation.md
+  kind: doc
+  description: The offline documentation gate and how to run it.
 provenance:
   license: CC0-1.0
   citation:

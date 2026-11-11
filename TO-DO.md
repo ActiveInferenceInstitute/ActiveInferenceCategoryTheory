@@ -1,8 +1,9 @@
 # TO-DO — ActiveInferenceCategoryTheory docs-deep review
 
-Last reviewed: 2026-08-02
+Last reviewed: 2026-11-11
 
-Findings from the docs-deep review pass, scoped by severity:
+Findings from the docs-deep review pass and the 2026-11-11 completeness pass,
+scoped by severity:
 
 - **Minor** = typo, broken link, formatting issue.
 - **Medium** = stale section rewrite, doc restructure, added missing guide.
@@ -36,6 +37,15 @@ Findings from the docs-deep review pass, scoped by severity:
 - [x] ✓ Rename the walk-through to `gnn/map_the_model.template.md` (the GNN pipeline's `*.template.md` marker for non-model Markdown) after a directory-level run picked it up as a model and reported it invalid; a repeat run pointed at `gnn/` parses exactly one model source with no errors.
 - [ ] Re-verify the GNN references in `gnn/` when the pinned revision moves: the specification was parsed and type-checked against GNN v5.0.3 (commit `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`), and the walk-through quotes that run's counts.
 - [ ] Re-check the hand-computed posteriors in `gnn/map_the_model.template.md` if the parameterization in `gnn/learner_perception_model.md` changes.
+
+### 2026-11-11 — modular `docs/` tree
+
+- [x] ✓ Add `docs/README.md` as the documentation index and `docs/repository-layout.md`,
+      `docs/gnn-materials.md`, and `docs/validation.md` as one-topic pages; add a
+      `.github/README.md` folder guide. Link the index from `README.md` and name the docs
+      locations in `AGENTS.md`.
+- [ ] Keep the GNN conformance description in `docs/gnn-materials.md` in step with the
+      pinned revision and CI job when either changes.
 
 ## Open / deferred
 
