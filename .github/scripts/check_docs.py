@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Validate documentation links and metadata for this repository.
+"""Validate documentation links, metadata, and index coverage for this repository.
 
-Three checks, all of which can fail:
+Three checks, selectable with ``--only`` and all of which can fail:
 
-1. Every relative Markdown link or image target resolves to a path inside the
-   repository that exists at the checked-out commit.
-2. Every tracked YAML file (including CITATION.cff) parses as YAML.
-3. CITATION.cff carries the required Citation File Format keys.
+1. ``links`` — every relative Markdown link or image target resolves to a path
+   inside the repository that exists at the checked-out commit.
+2. ``metadata`` — every tracked YAML file (including CITATION.cff) parses as
+   YAML, and CITATION.cff carries the required Citation File Format keys.
+3. ``index`` — every tracked Markdown document is reachable from the flat
+   index at ``docs/documentation-index.md``.
 
 External URLs are not fetched: the gate is about the repository's own links,
 and a network probe would make the verdict depend on third-party availability.
@@ -14,6 +16,7 @@ and a network probe would make the verdict depend on third-party availability.
 
 from __future__ import annotations
 
+import argparse
 import re
 import subprocess
 import sys
@@ -25,6 +28,9 @@ INLINE_LINK = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 REFERENCE_LINK = re.compile(r"^\[[^\]]+\]:\s*(\S+)", re.MULTILINE)
 SCHEME = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*:")
 CFF_REQUIRED = ("cff-version", "title", "license")
+INDEX_DOC = Path("docs/documentation-index.md")
+MARKDOWN_SUFFIXES = {".md", ".markdown"}
+CHECKS = ("links", "metadata", "index")
 
 
 def tracked_files() -> list[Path]:
@@ -44,21 +50,29 @@ def link_target(raw: str) -> str:
     return parts[0] if parts else ""
 
 
+def relative_targets(path: Path) -> list[str]:
+    """Return the in-repository target of every relative link in one file."""
+    text = path.read_text(encoding="utf-8")
+    targets = INLINE_LINK.findall(text) + REFERENCE_LINK.findall(text)
+    relatives = []
+    for raw in targets:
+        target = unquote(link_target(raw))
+        if not target or target.startswith("#") or SCHEME.match(target):
+            continue
+        base = target.split("#", 1)[0]
+        if base:
+            relatives.append(raw)
+    return relatives
+
+
 def check_links(files: list[Path]) -> list[str]:
     errors: list[str] = []
     resolved_root = ROOT.resolve()
     for path in files:
-        if path.suffix.lower() not in {".md", ".markdown"}:
+        if path.suffix.lower() not in MARKDOWN_SUFFIXES:
             continue
-        text = path.read_text(encoding="utf-8")
-        targets = INLINE_LINK.findall(text) + REFERENCE_LINK.findall(text)
-        for raw in targets:
-            target = unquote(link_target(raw))
-            if not target or target.startswith("#") or SCHEME.match(target):
-                continue
-            base = target.split("#", 1)[0]
-            if not base:
-                continue
+        for raw in relative_targets(path):
+            base = unquote(link_target(raw)).split("#", 1)[0]
             resolved = (path.parent / base).resolve()
             try:
                 resolved.relative_to(resolved_root)
@@ -91,15 +105,64 @@ def check_yaml(files: list[Path]) -> list[str]:
     return errors
 
 
-def main() -> int:
+def check_index(files: list[Path]) -> list[str]:
+    index = ROOT / INDEX_DOC
+    if not index.is_file():
+        return [f"{INDEX_DOC}: missing documentation index"]
+    listed = {
+        (index.parent / unquote(link_target(raw)).split("#", 1)[0]).resolve()
+        for raw in relative_targets(index)
+    }
+    errors: list[str] = []
+    for path in files:
+        if path.suffix.lower() not in MARKDOWN_SUFFIXES:
+            continue
+        if path.resolve() == index.resolve():
+            continue
+        if path.resolve() not in listed:
+            errors.append(
+                f"{path.relative_to(ROOT)}: not listed in {INDEX_DOC}"
+            )
+    return errors
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--only",
+        default=",".join(CHECKS),
+        help=f"comma-separated subset of: {', '.join(CHECKS)} (default: all)",
+    )
+    args = parser.parse_args(argv)
+    selected = [name.strip() for name in args.only.split(",") if name.strip()]
+    unknown = [name for name in selected if name not in CHECKS]
+    if unknown:
+        parser.error(f"unknown check(s) {unknown}; choose from {list(CHECKS)}")
+
     files = tracked_files()
-    errors = check_links(files) + check_yaml(files)
+    runners = {"links": check_links, "metadata": check_yaml, "index": check_index}
+    if "metadata" in selected:
+        try:
+            import yaml  # noqa: F401 - preflight for the documented dependency
+        except ImportError:
+            print(
+                "the metadata check needs PyYAML: python3 -m pip install pyyaml==6.0.2",
+                file=sys.stderr,
+            )
+            return 2
+    errors: list[str] = []
+    for name in selected:
+        errors.extend(runners[name](files))
+
     if errors:
         print(f"{len(errors)} documentation check(s) failed:", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    print(f"checked {len(files)} tracked files: relative links resolve; YAML parses")
+    print(
+        f"checked {len(files)} tracked files: "
+        f"{', '.join(selected)} ok"
+    )
     return 0
 
 

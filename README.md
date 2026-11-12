@@ -21,18 +21,27 @@ Machine-readable citation metadata is available in [CITATION.cff](CITATION.cff).
 
 ## Documentation gate
 
-[`.github/workflows/docs.yml`](.github/workflows/docs.yml) runs
-[`.github/scripts/check_docs.py`](.github/scripts/check_docs.py) on every pull
-request and on pushes to `main`. The gate fails, with exit code 1, when a
-relative Markdown link or image does not resolve, when a tracked YAML file does
-not parse, or when `CITATION.cff` lacks `cff-version`, `title` or `license`.
-The proof that it can fail is run 41720066280, job `links and metadata`: the log
-line `README.md: missing link target: does-not-exist.md` is followed by
-`##[error]Process completed with exit code 1.`
+[`run.sh`](run.sh) is the single entry point for every check; each arm is the
+exact command CI runs. [`.github/workflows/docs.yml`](.github/workflows/docs.yml)
+runs two of them in one job, `docs gate`, on every pull request and on pushes to
+`main`: `./run.sh docs` (step `links and metadata`) and `./run.sh gnn` (step
+`gnn conformance (pinned)`).
 
-Reproduce it locally — the gate's only dependency is PyYAML:
+`./run.sh docs` fails, with exit code 1, when a relative Markdown link or image
+does not resolve, when a tracked YAML file does not parse, when `CITATION.cff`
+lacks `cff-version`, `title` or `license`, or when a tracked Markdown document is
+missing from [`docs/documentation-index.md`](docs/documentation-index.md). The
+proof that it can fail is run 41720066280, in the job then named
+`links and metadata`: the log line `README.md: missing link target:
+does-not-exist.md` is followed by `##[error]Process completed with exit code 1.`
+
+Reproduce it locally — the offline arm's only dependency is PyYAML:
 
 ```bash
-python -m pip install pyyaml==6.0.2
-python .github/scripts/check_docs.py
+python3 -m pip install pyyaml==6.0.2
+./run.sh docs
 ```
+
+[`docs/run-guide.md`](docs/run-guide.md) lists every arm and
+[`docs/arm-runtimes.md`](docs/arm-runtimes.md) holds the measured wall time of
+each; [`docs/validation.md`](docs/validation.md) explains what the gate checks.

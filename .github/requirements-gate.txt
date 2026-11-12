@@ -1,0 +1,7 @@
+# One environment for every gate arm. Installed by `./run.sh setup`, which also
+# installs the GNN parser at the revision named by .github/gnn-pin.json (that pin
+# is a git revision, not a PyPI requirement, so it cannot live in this file).
+pyyaml==6.0.2
+# Imported by the pinned GNN parser when it parses and type-checks models.
+defusedxml==0.7.1
+psutil==7.2.2
