@@ -10,6 +10,32 @@ It holds exactly one GNN model source plus a walk-through:
 | [`gnn/learner_perception_model.md`](../gnn/learner_perception_model.md) | The model: a two-state perception model of the reader, written in GNN section order. |
 | [`gnn/map_the_model.template.md`](../gnn/map_the_model.template.md) | The exercise: a starting category-theory-to-GNN correspondence, a hand-worked perception update, and how to run your own model. |
 
+[`../.github/GNN.md`](../.github/GNN.md) is the pointer that records what the
+conformance step parses and why the model is not named `*.gnn.md`.
+
+## The pin
+
+The upstream parser is pinned in [`../.github/gnn-pin.json`](../.github/gnn-pin.json),
+a curated pin rather than a lockfile. Its schema is `gnn-importer-pin/v1` and it
+records:
+
+| Field | Value |
+| --- | --- |
+| `repository` | `ActiveInferenceInstitute/Generalized_Notation_Notation` |
+| `tag` | `v5.0.3` |
+| `revision` | `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1` |
+| `recorded` | `2026-11-12` |
+
+`./run.sh setup` installs exactly that revision; `./run.sh gnn` then asserts the
+imported `gnn.__version__` matches `tag`, parses
+`gnn/learner_perception_model.md`, checks its syntax, and runs the GNN type
+checker. In CI both commands are steps of the `gate` job, the second named
+`gnn conformance (pinned)`.
+
+Change the pin only when the conformance target intentionally moves, and
+re-verify the model afterwards: [`../.github/README.md`](../.github/README.md)
+records that editing rule.
+
 ## Why the walk-through is named `*.template.md`
 
 The GNN pipeline's directory discovery treats `*.template.md` as non-model
@@ -19,22 +45,19 @@ exactly one model source, `learner_perception_model.md`, with no "invalid file"
 noise from the prose. Do not rename it to a bare `*.md` unless you also adjust
 the pipeline invocation.
 
-## The pinned revision
+## Run the check locally
 
-The upstream parser is pinned in [`../.github/gnn-pin.json`](../.github/gnn-pin.json)
-to `ActiveInferenceInstitute/Generalized_Notation_Notation` v5.0.3, commit
-`8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`. The `gnn conformance (pinned)` job in
-[`../.github/workflows/docs.yml`](../.github/workflows/docs.yml) installs that
-exact revision, asserts the imported `gnn.__version__` matches the pin, parses
-`learner_perception_model.md`, checks its syntax, and runs the GNN type checker.
+```bash
+./run.sh setup   # installs the pinned parser; needs network
+./run.sh gnn     # parse + type-check; prints {"gnn-version": ..., "result": "verified"}
+```
 
-CI is the only check here that needs network access (it installs the pinned
-parser). A documentation-only change does not require it to run locally.
+Without `setup`, the arm exits with code 2 and says the parser is missing, so a
+missing environment is never reported as a model failure. CI is the only place
+the check runs automatically; a documentation-only change does not require it.
 
-## Reproduce the check locally
-
-From a clone of the GNN repository, steps 3 and 5 parse and type-check a
-directory of specifications:
+To run the upstream pipeline directly from a clone of the GNN repository, steps
+3 and 5 parse and type-check a directory of specifications:
 
 ```bash
 python src/gnn/main.py --only-steps "3,5" --target-dir path/to/gnn --output-dir output

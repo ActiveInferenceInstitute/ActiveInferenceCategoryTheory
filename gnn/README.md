@@ -31,7 +31,7 @@ the walk-through keeps that boundary explicit.
 
 The shipped specification was parsed and type-checked by the GNN implementation
 at commit `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1` (v5.0.3). The repository's
-`gnn conformance (pinned)` CI job installs that revision from
+`gnn conformance (pinned)` CI step (`./run.sh gnn`) installs that revision from
 [`.github/gnn-pin.json`](../.github/gnn-pin.json), parses
 `learner_perception_model.md`, and runs the GNN type checker.
 
