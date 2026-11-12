@@ -56,6 +56,10 @@ python3 -m pip install pyyaml==6.0.2
 
 A passing run prints `checked N tracked files: links, metadata, index ok`.
 
+If PyYAML is missing, the `metadata` check exits with code 2 and prints the install
+line above instead of reporting a YAML error, so a missing dependency is never
+mistaken for invalid metadata.
+
 ## Failure proof
 
 The gate is known to be able to fail. CI run 41720066280, in the job then named

@@ -141,6 +141,15 @@ def main(argv: list[str] | None = None) -> int:
 
     files = tracked_files()
     runners = {"links": check_links, "metadata": check_yaml, "index": check_index}
+    if "metadata" in selected:
+        try:
+            import yaml  # noqa: F401 - preflight for the documented dependency
+        except ImportError:
+            print(
+                "the metadata check needs PyYAML: python3 -m pip install pyyaml==6.0.2",
+                file=sys.stderr,
+            )
+            return 2
     errors: list[str] = []
     for name in selected:
         errors.extend(runners[name](files))
