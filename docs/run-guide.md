@@ -5,9 +5,10 @@ repository. Each arm it exposes is the exact command CI runs; the workflow in
 [`../.github/workflows/docs.yml`](../.github/workflows/docs.yml) invokes
 `./run.sh` and holds no second copy of a command.
 
-There are no `lint`, `type`, or `test` arms. The repository ships documentation
-and metadata, with one Python gate script as its entire executable surface, so a
-separate linter or test suite would have nothing of its own to check.
+There are no `lint` or `type` arms. The repository ships documentation and
+metadata, and the Python gate scripts are its executable surface. The `tests`
+arm covers those scripts themselves: it is a hermetic `unittest` suite that
+stubs the pinned parser, so it needs no wheel and no network.
 
 ## Arms
 
@@ -17,15 +18,16 @@ separate linter or test suite would have nothing of its own to check.
 | `links` | `./run.sh links` | Every relative Markdown link and image target resolves inside the repository. | No |
 | `metadata` | `./run.sh metadata` | Every tracked YAML file and `CITATION.cff` parses; the required CFF keys exist. | No |
 | `index` | `./run.sh index` | Every tracked Markdown document appears in [`documentation-index.md`](documentation-index.md). | No |
+| `tests` | `./run.sh tests` | The gate scripts' unit tests: [`test_check_gnn.py`](../.github/scripts/tests/test_check_gnn.py) drives `check_gnn.py` through all three type-checker outcomes with the parser stubbed. | No |
 | `gnn` | `./run.sh gnn` | `gnn/learner_perception_model.md` parses and type-checks against the pinned parser. | Only to install |
-| `setup` | `./run.sh setup` | Installs [`../.github/requirements-gate.txt`](../.github/requirements-gate.txt) and the parser pinned in [`../.github/gnn-pin.json`](../.github/gnn-pin.json). | Yes |
-| `all` | `./run.sh all` | `docs`, then `gnn`. | As above |
+| `setup` | `./run.sh setup` | Validates the pin record, then installs [`../.github/requirements-gate.txt`](../.github/requirements-gate.txt) and the parser pinned in [`../.github/gnn-pin.json`](../.github/gnn-pin.json). | Yes |
+| `all` | `./run.sh all` | `docs`, `tests`, then `gnn`. | As above |
 | `measure` | `./run.sh measure` | Refreshes the current receipt in [`arm-runtimes.md`](arm-runtimes.md); `--check` validates the receipts and re-renders without running anything. | Refresh only |
 
-The offline arms need one wheel, `pyyaml==6.0.2`, and nothing else. The
-conformance arm exits with code 2 and a pointer to `./run.sh setup` when the
-pinned parser is missing, so a missing environment is never mistaken for a failed
-model.
+The offline `docs` arm needs one wheel, `pyyaml==6.0.2`; the `tests` arm needs
+nothing beyond the standard library. The conformance arm exits with code 2 and a
+pointer to `./run.sh setup` when the pinned parser is missing, so a missing
+environment is never mistaken for a failed model.
 
 `./run.sh` runs `python3` from `PATH`; set `PYTHON=/path/to/python` to override it.
 
@@ -33,9 +35,10 @@ model.
 
 `.github/workflows/docs.yml` defines one job, `gate` (display name `docs gate`),
 with one checkout, one `setup-python-uv` interpreter, one virtual environment,
-and one install for both checks. Its steps are `./run.sh setup`, then
-`./run.sh docs` under the step name `links and metadata`, then `./run.sh gnn`
-under the step name `gnn conformance (pinned)`.
+and one install for all three checks. Its steps are `./run.sh setup`, then
+`./run.sh docs` under the step name `links and metadata`, then `./run.sh tests`
+under the step name `gate unit tests (hermetic)`, then `./run.sh gnn` under the
+step name `gnn conformance (pinned)`.
 
 The conformance step keeps its historical step name, so log searches for
 `gnn conformance (pinned)` still find it; the job that contains it is `gate`.

@@ -6,12 +6,13 @@ There is no application code here; the checks are thin Python scripts, and
 
 | Path | Purpose |
 | --- | --- |
-| [`workflows/docs.yml`](workflows/docs.yml) | The `docs` workflow: one job, `gate` (displayed as `docs gate`), running the offline `links and metadata` step and the network-dependent `gnn conformance (pinned)` step. |
+| [`workflows/docs.yml`](workflows/docs.yml) | The `docs` workflow: one job, `gate` (displayed as `docs gate`), running the offline `links and metadata` step, the hermetic `gate unit tests (hermetic)` step, and the network-dependent `gnn conformance (pinned)` step. |
 | [`scripts/check_docs.py`](scripts/check_docs.py) | Validates relative Markdown links, tracked YAML, `CITATION.cff` keys, and documentation-index coverage. |
-| [`scripts/check_gnn.py`](scripts/check_gnn.py) | Parses and type-checks `gnn/learner_perception_model.md` against the pinned parser. |
-| [`scripts/setup_gate.py`](scripts/setup_gate.py) | Installs `requirements-gate.txt` and the parser pinned in `gnn-pin.json`. |
+| [`scripts/tests/test_check_gnn.py`](scripts/tests/test_check_gnn.py) | Hermetic unit tests for the conformance gate: `True` passes, `2` and `False` fail, with the parser stubbed. Run by `./run.sh tests`. |
+| [`scripts/check_gnn.py`](scripts/check_gnn.py) | Parses and type-checks `gnn/learner_perception_model.md` against the pinned parser; validates the pin record before importing it. |
+| [`scripts/setup_gate.py`](scripts/setup_gate.py) | Validates the pin record, then installs `requirements-gate.txt` and the parser pinned in `gnn-pin.json`. |
 | [`scripts/measure_arms.py`](scripts/measure_arms.py) | Measures each arm and writes the receipts and rendered tables in [`../docs/arm-runtimes.md`](../docs/arm-runtimes.md); `--check` validates the receipts and re-renders without running an arm. |
-| [`requirements-gate.txt`](requirements-gate.txt) | The one dependency set both arms share. |
+| [`requirements-gate.txt`](requirements-gate.txt) | The one dependency set the `docs` and `gnn` arms share; the `tests` arm needs none. |
 | [`gnn-pin.json`](gnn-pin.json) | The pinned Generalized Notation Notation revision, schema `gnn-importer-pin/v1`: tag `v5.0.3`, commit `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`, recorded `2026-11-12`. |
 | [`dependabot.yml`](dependabot.yml) | Dependabot configuration for GitHub Actions updates. |
 | [`GNN.md`](GNN.md) | Pointer to the pinned GNN conformance check: the model source it validates and why that file is not named `*.gnn.md`. |
@@ -20,7 +21,8 @@ There is no application code here; the checks are thin Python scripts, and
 
 ```bash
 ./run.sh docs    # links, YAML/CFF metadata, index coverage — offline
-./run.sh setup   # one environment for both arms; needs network
+./run.sh tests   # gate unit tests, parser stubbed — offline
+./run.sh setup   # one environment for the docs and gnn arms; needs network
 ./run.sh gnn     # parse + type-check against the pinned parser
 ```
 

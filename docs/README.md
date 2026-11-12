@@ -62,9 +62,10 @@ See [`gnn-materials.md`](gnn-materials.md) for how these are verified.
 
 Everything in this repository works offline: there is no install step and no
 network call. The executable checks are the arms of [`../run.sh`](../run.sh),
-described in [`run-guide.md`](run-guide.md); the offline `docs` arm needs PyYAML
-and nothing else, and [`validation.md`](validation.md) explains what it verifies.
-CI runs one job, `docs gate`, that provisions one environment and then runs
-`./run.sh docs` and `./run.sh gnn`. The conformance arm is the only check that
+described in [`run-guide.md`](run-guide.md); the offline `docs` arm needs PyYAML,
+the offline `tests` arm needs nothing but the standard library, and
+[`validation.md`](validation.md) explains what they verify. CI runs one job,
+`docs gate`, that provisions one environment and then runs `./run.sh docs`,
+`./run.sh tests`, and `./run.sh gnn`. The conformance arm is the only check that
 needs network access, because it installs the pinned GNN parser; it is not
 required to work on a documentation change.

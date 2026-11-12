@@ -102,10 +102,23 @@ scoped by severity:
       covers Markdown only, so it does not report the gap. Owner: documentation
       maintainer, in the next layout edit.
 
+### 2026-11-12 — regression test for the checker contract, pin validated first
+
+- [x] ✓ Add `./run.sh tests` (CI step `gate unit tests (hermetic)`):
+      `.github/scripts/tests/test_check_gnn.py` drives `check_gnn.py` through all
+      three documented type-checker outcomes with the `gnn` modules stubbed, so
+      `True` must pass, and `2` or `False` must fail the arm. It needs no wheel
+      and no network, and every case fails against the pre-fix truthiness test.
+- [x] ✓ `setup_gate.py` now validates `.github/gnn-pin.json` before it installs
+      anything; previously a malformed pin record surfaced as a `pip` failure
+      traceback. `docs/gnn-materials.md` states the actual order for both
+      scripts.
+
 ## Open / deferred
 
 - SECURITY.md — deferred: not meaningful for a docs-only curriculum repository (no code, no security-contact surface).
-- No unit-test suite — the repo is documentation only. The checks are the arms of
+- Unit tests cover the gate scripts, not the content: `./run.sh tests` is
+  hermetic and stubs the parser. Everything else is checked by the arms of
   [`run.sh`](run.sh) (`docs`, `links`, `metadata`, `index`, `gnn`), run by
   `.github/workflows/docs.yml` as one job; the offline arms need PyYAML and no
   network.

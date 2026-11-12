@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Provision the one environment every gate arm runs in.
 
-Installs the pinned third-party requirements, then the GNN parser at the exact
-revision named by ``.github/gnn-pin.json``. The documentation arm needs only the
-requirements file; the conformance arm needs the parser as well, so a single
-invocation covers both arms.
+Validates ``.github/gnn-pin.json``, then installs the pinned third-party
+requirements, then the GNN parser at the exact revision that record names. The
+documentation arm needs only the requirements file; the conformance arm needs
+the parser as well, so a single invocation covers both arms.
 
 Network access is required. Nothing here runs during a documentation-only
 change: ``./run.sh docs`` uses a Python that already has PyYAML.
@@ -47,9 +47,8 @@ def install(*args: str) -> None:
 
 
 def main() -> int:
-    install("-r", str(REQUIREMENTS))
-
     pin = load_pin()
+    install("-r", str(REQUIREMENTS))
     spec = (
         "generalized-notation-notation @ "
         f"git+https://github.com/{pin['repository']}.git@{pin['revision']}"

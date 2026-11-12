@@ -37,6 +37,10 @@ SCRIPTS = ROOT / ".github" / "scripts"
 # measurement. The baseline receipt records provisioning once, with conditions.
 ARMS: dict[str, tuple[list[str], str]] = {
     "docs": ([sys.executable, str(SCRIPTS / "check_docs.py")], "./run.sh docs"),
+    "tests": (
+        [sys.executable, "-m", "unittest", "discover", "-s", str(SCRIPTS / "tests")],
+        "./run.sh tests",
+    ),
     "gnn": ([sys.executable, str(SCRIPTS / "check_gnn.py")], "./run.sh gnn"),
 }
 ALL_COMMAND = "./run.sh all"
@@ -218,15 +222,17 @@ def render(receipt: dict, baseline: dict) -> str:
         lines.append(f"| `{row['arm']}` | `{row['command']}` | {seconds} | {row['status']} |")
 
     total = sum(
-        row["seconds"] or 0.0 for row in receipt["arms"] if row["arm"] in ("docs", "gnn")
+        row["seconds"] or 0.0
+        for row in receipt["arms"]
+        if row["arm"] in ("docs", "tests", "gnn")
     )
     lines += [
         "",
         f"Measured {receipt['measured']} on {receipt['host']}, Python {receipt['python']}: "
         "one run of each arm, no warm-up.",
         "",
-        f"The arms above sum to {total:.2f} s, and `./run.sh all` runs `docs` and `gnn`",
-        "back to back. `setup` is provisioning, not a check, so it is not timed here.",
+        f"The arms above sum to {total:.2f} s, and `./run.sh all` runs `docs`, `tests` and",
+        "`gnn` back to back. `setup` is provisioning, not a check, so it is not timed here.",
         "",
         "`setup` installs",
         "[`../.github/requirements-gate.txt`](../.github/requirements-gate.txt) and the",
