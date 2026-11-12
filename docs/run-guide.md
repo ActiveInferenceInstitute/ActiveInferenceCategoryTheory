@@ -20,7 +20,7 @@ separate linter or test suite would have nothing of its own to check.
 | `gnn` | `./run.sh gnn` | `gnn/learner_perception_model.md` parses and type-checks against the pinned parser. | Only to install |
 | `setup` | `./run.sh setup` | Installs [`../.github/requirements-gate.txt`](../.github/requirements-gate.txt) and the parser pinned in [`../.github/gnn-pin.json`](../.github/gnn-pin.json). | Yes |
 | `all` | `./run.sh all` | `docs`, then `gnn`. | As above |
-| `measure` | `./run.sh measure` | Refreshes [`arm-runtimes.md`](arm-runtimes.md); `--check` verifies it was not hand-edited. | As above |
+| `measure` | `./run.sh measure` | Refreshes the current receipt in [`arm-runtimes.md`](arm-runtimes.md); `--check` validates the receipts and re-renders without running anything. | Refresh only |
 
 The offline arms need one wheel, `pyyaml==6.0.2`, and nothing else. The
 conformance arm exits with code 2 and a pointer to `./run.sh setup` when the
@@ -45,32 +45,18 @@ environment, and dependency install.
 
 ## Measurement
 
-Row-by-row wall times live in [`arm-runtimes.md`](arm-runtimes.md), which
-[`../.github/scripts/measure_arms.py`](../.github/scripts/measure_arms.py)
-generates and no one edits by hand. Run `./run.sh measure` after changing an arm;
-run `./run.sh measure --check` to confirm the committed file still matches the
-generator.
+Every measured number — each arm's wall time and the one-time two-job baseline —
+lives in [`arm-runtimes.md`](arm-runtimes.md). That file carries two JSON receipts
+and is rendered from them by
+[`../.github/scripts/measure_arms.py`](../.github/scripts/measure_arms.py); prose
+here and elsewhere links to it instead of repeating a number.
 
-One-time comparison, 2026-11-12, macOS arm64, Python 3.12.16, warm pip cache.
-The two-job layout provisioned each job separately: 2.24 s for the
-documentation job (`uv venv --seed` 0.39 s, `pyyaml==6.0.2` 1.85 s) and 8.12 s
-for the conformance job (`uv venv --seed` 0.03 s, `defusedxml psutil pyyaml`
-2.50 s, pinned parser 5.59 s), or 10.36 s across two checkouts and two
-interpreters; three repeats landed at 9.33 s, 9.99 s and 10.93 s. The single job
-builds one virtual environment and installs one dependency set; the same three
-repeats landed at 6.78 s, 7.44 s and 7.71 s, so provisioning fell by roughly
-three seconds per run.
-
-The install was also the only place the two jobs disagreed about a version: the
-conformance job resolved `pyyaml` to 6.0.3 while the documentation job pinned
-6.0.2. One requirements file now serves both arms.
-
-Check time did not move. `docs` measured 0.11 s before and `gnn` 0.30 s; after
-the change the same arms measured 0.12 s – 0.59 s and 0.28 s – 0.72 s across
-repeated runs, with noise larger than any difference, and running the old
-`links,metadata` selection and the new three-check selection in the same
-environment differed by less than the noise between runs. The new index check
-adds no measurable cost.
+`./run.sh measure` refreshes the current receipt by running the arms.
+`./run.sh measure --check` runs nothing: it validates both receipts, re-renders
+the document, and compares byte for byte, so verification needs no environment,
+no install, and no network. The baseline receipt records the two-job layout this
+repository used before the gate was consolidated; that layout no longer exists,
+so its numbers cannot be re-measured.
 
 ## Related
 
