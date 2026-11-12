@@ -28,12 +28,18 @@ jobs:
           python -m pip install --disable-pip-version-check defusedxml psutil pyyaml
           python - <<'PY'
           import json
+          import re
           import subprocess
           import sys
           from pathlib import Path
 
           pin = json.loads(Path(".github/gnn-pin.json").read_text(encoding="utf-8"))
-          assert pin["repository"] == "ActiveInferenceInstitute/Generalized_Notation_Notation"
+          if pin["repository"] != "ActiveInferenceInstitute/Generalized_Notation_Notation":
+              raise SystemExit(f"pin repository is not the GNN upstream: {pin['repository']!r}")
+          if not re.fullmatch(r"v?\d+\.\d+\.\d+", pin["tag"]):
+              raise SystemExit(f"pin tag is not a release version: {pin['tag']!r}")
+          if not re.fullmatch(r"[0-9a-f]{40}", pin["revision"]):
+              raise SystemExit(f"pin revision is not a full commit id: {pin['revision']!r}")
           spec = (
               "generalized-notation-notation @ "
               f"git+https://github.com/{pin['repository']}.git@{pin['revision']}"
@@ -71,8 +77,17 @@ jobs:
               model_dir = Path(output_dir) / "models"
               model_dir.mkdir()
               shutil.copy(model, model_dir / model.name)
-              if not GNNTypeChecker().validate_gnn_files(model_dir, Path(output_dir)):
-                  raise SystemExit("GNN type checker rejected the learner perception model")
+              # strict=True promotes B-orientation contradictions to errors; the
+              # return is the pipeline exit sentinel True/2/False, so compare
+              # identity rather than truthiness (2 is a warning sentinel and is
+              # not a pass here).
+              checked = GNNTypeChecker().validate_gnn_files(
+                  model_dir, Path(output_dir), strict=True
+              )
+              if checked is not True:
+                  raise SystemExit(
+                      f"GNN type checker did not return True: {checked!r}"
+                  )
 
           print(json.dumps({"gnn-version": __version__, "result": "verified"}, sort_keys=True))
           PY

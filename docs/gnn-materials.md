@@ -27,6 +27,10 @@ to `ActiveInferenceInstitute/Generalized_Notation_Notation` v5.0.3, commit
 [`../.github/workflows/docs.yml`](../.github/workflows/docs.yml) installs that
 exact revision, asserts the imported `gnn.__version__` matches the pin, parses
 `learner_perception_model.md`, checks its syntax, and runs the GNN type checker.
+The type checker's `validate_gnn_files` returns `True` (exit 0), `2` (success
+with warnings) or `False` (exit 1); the job passes `strict=True` and requires
+the return to be `True`, so B-orientation warnings fail rather than land in the
+`2` bucket.
 
 CI is the only check here that needs network access (it installs the pinned
 parser). A documentation-only change does not require it to run locally.
@@ -42,9 +46,11 @@ python src/gnn/main.py --only-steps "3,5" --target-dir path/to/gnn --output-dir 
 
 Pointed at `gnn/`, that run parsed one model file and serialized 22 formats with
 no parse failures, and reported the model valid with 0 errors, 0 warnings, and 21
-parameters. The walk-through quotes those counts, and its hand-computed
-posteriors were checked independently against the parameterization in
-`learner_perception_model.md`.
+parameters. These counts are from that manual run; the CI job runs only the
+parser and type checker and does not reproduce the format count or the warning
+count, so it does not protect them against a future warning-only change. The
+walk-through quotes those counts, and its hand-computed posteriors were checked
+independently against the parameterization in `learner_perception_model.md`.
 
 ## License
 

@@ -33,9 +33,14 @@ The shipped specification was parsed and type-checked by the GNN implementation
 at commit `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1` (v5.0.3). The repository's
 `gnn conformance (pinned)` CI job installs that revision from
 [`.github/gnn-pin.json`](../.github/gnn-pin.json), parses
-`learner_perception_model.md`, and runs the GNN type checker.
+`learner_perception_model.md`, and runs the GNN type checker. The checker's
+`validate_gnn_files` returns `True` (exit 0), `2` (success with warnings) or
+`False` (exit 1); the job passes `strict=True` and requires `is not True` to be
+false, so B-orientation warnings fail the job instead of landing in the `2`
+bucket.
 
-The equivalent full-pipeline check is:
+The manual full-pipeline check — not what the CI job runs; CI runs only the
+parser and type checker — is:
 
 ```bash
 python src/gnn/main.py --only-steps "3,5" \
@@ -45,9 +50,10 @@ python src/gnn/main.py --only-steps "3,5" \
 
 Result of that run, pointed at this directory: step 3 parsed 1 file with 0
 failures and serialized 22 formats; step 5 reported the model valid with 0
-errors, 0 warnings and 21 parameters. The hand-computed posteriors in the
-walk-through were re-checked independently against the parameterization in the
-file.
+errors, 0 warnings and 21 parameters. Those counts come from that manual run,
+not from the CI job, so CI does not protect them against a future warning-only
+change. The hand-computed posteriors in the walk-through were re-checked
+independently against the parameterization in the file.
 
 ## License
 

@@ -37,6 +37,7 @@ scoped by severity:
 - [x] ✓ Rename the walk-through to `gnn/map_the_model.template.md` (the GNN pipeline's `*.template.md` marker for non-model Markdown) after a directory-level run picked it up as a model and reported it invalid; a repeat run pointed at `gnn/` parses exactly one model source with no errors.
 - [ ] Re-verify the GNN references in `gnn/` when the pinned revision moves: the specification was parsed and type-checked against GNN v5.0.3 (commit `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`), and the walk-through quotes that run's counts.
 - [ ] Re-check the hand-computed posteriors in `gnn/map_the_model.template.md` if the parameterization in `gnn/learner_perception_model.md` changes.
+- [x] ✓ Record the type checker's exit sentinel: `validate_gnn_files` returns `True` (exit 0), `2` (success with warnings) or `False` (exit 1). The conformance job now passes `strict=True` and requires `is not True`, so B-orientation warnings fail the job instead of landing in the `2` bucket.
 
 ### 2026-11-11 — modular `docs/` tree
 
