@@ -29,7 +29,11 @@ records:
 `./run.sh setup` installs exactly that revision; `./run.sh gnn` then asserts the
 imported `gnn.__version__` matches `tag`, parses
 `gnn/learner_perception_model.md`, checks its syntax, and runs the GNN type
-checker. In CI both commands are steps of the `gate` job, the second named
+checker with `strict=True`. Both scripts validate the pin record first
+(repository, tag shape, 40-hex revision) and stop with a message if it is
+malformed. `validate_gnn_files` returns `True` when every file validates, `2` when
+files are invalid or none were found, and `False` on a hard failure; the job
+requires exactly `True`, so a `2` fails the arm instead of passing as truthy. In CI both commands are steps of the `gate` job, the second named
 `gnn conformance (pinned)`.
 
 Change the pin only when the conformance target intentionally moves, and
@@ -49,7 +53,7 @@ the pipeline invocation.
 
 ```bash
 ./run.sh setup   # installs the pinned parser; needs network
-./run.sh gnn     # parse + type-check; prints {"gnn-version": ..., "result": "verified"}
+./run.sh gnn     # parse + type-check (strict); prints gnn-version, result, type-checker-result
 ```
 
 Without `setup`, the arm exits with code 2 and says the parser is missing, so a
@@ -63,9 +67,10 @@ To run the upstream pipeline directly from a clone of the GNN repository, steps
 python src/gnn/main.py --only-steps "3,5" --target-dir path/to/gnn --output-dir output
 ```
 
-Pointed at `gnn/`, that run parsed one model file and serialized 22 formats with
-no parse failures, and reported the model valid with 0 errors, 0 warnings, and 21
-parameters. The walk-through quotes those counts, and its hand-computed
+Pointed at `gnn/`, a manual run of that full pipeline command (not the CI or
+`./run.sh gnn` job, which checks only parse, syntax and type-check outcomes) parsed
+one model file and serialized 22 formats with no parse failures, and reported the
+model valid with 0 errors, 0 warnings, and 21 parameters. The walk-through quotes those counts, and its hand-computed
 posteriors were checked independently against the parameterization in
 `learner_perception_model.md`.
 

@@ -33,7 +33,8 @@ The shipped specification was parsed and type-checked by the GNN implementation
 at commit `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1` (v5.0.3). The repository's
 `gnn conformance (pinned)` CI step (`./run.sh gnn`) installs that revision from
 [`.github/gnn-pin.json`](../.github/gnn-pin.json), parses
-`learner_perception_model.md`, and runs the GNN type checker.
+`learner_perception_model.md`, and runs the GNN type checker with `strict=True`; the
+job requires the checker to return `True` (a `2` or `False` fails it).
 
 The equivalent full-pipeline check is:
 
@@ -43,7 +44,8 @@ python src/gnn/main.py --only-steps "3,5" \
   --output-dir output
 ```
 
-Result of that run, pointed at this directory: step 3 parsed 1 file with 0
+Result of that manual full-pipeline run (not produced by the CI or `./run.sh gnn`
+job), pointed at this directory: step 3 parsed 1 file with 0
 failures and serialized 22 formats; step 5 reported the model valid with 0
 errors, 0 warnings and 21 parameters. The hand-computed posteriors in the
 walk-through were re-checked independently against the parameterization in the
