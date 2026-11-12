@@ -45,3 +45,41 @@ python3 -m pip install pyyaml==6.0.2
 [`docs/run-guide.md`](docs/run-guide.md) lists every arm and
 [`docs/arm-runtimes.md`](docs/arm-runtimes.md) holds the measured wall time of
 each; [`docs/validation.md`](docs/validation.md) explains what the gate checks.
+
+## Education contract
+
+[`education-contract.json`](education-contract.json) declares adoption of the
+[Education workflow contract](https://github.com/ActiveInferenceInstitute/courses/blob/main/docs/workflows/education.md).
+[`specs/education/schema.json`](specs/education/schema.json) is the unchanged
+canonical schema; [`category-theory.json`](specs/education/category-theory.json)
+is a curated transcription of the authored learning plan.
+
+Each teaching section under **Topics and Sections** in the
+[syllabus](IntroAdventureSyllabus.md#topics-and-sections) becomes a unit, with its
+heading as the title and its opening learning-focus sentence as the objective.
+The [GNN scaffold](gnn/map_the_model.template.md) contributes the *Map the Model*
+unit, quoting its perception-update and model-writing prompts; its executable
+example remains [the learner perception model](gnn/learner_perception_model.md),
+not a separate invented learning objective. Unit `source_path` fields and the
+bundle's source revision identify the authored material.
+
+Prerequisites and glossary are empty: suggested reading order and optional
+external pre-/co-requisites are not internal dependency edges, and the GNN
+correspondence table explicitly offers analogies rather than definitions.
+The workload outline's “Applying in the variability-retained world” has no
+teaching section or objective to transcribe. No topic, stratum, or audience
+classification is inferred.
+
+With the lead checkout alongside this repository, validate using its checker
+without installing into or writing to the lead:
+
+```bash
+python3 -B ../courses/software/scripts/check_education_contract.py \
+  specs/education/category-theory.json
+python3 -B ../courses/software/scripts/check_education_contract.py
+./run.sh docs
+./run.sh gnn
+```
+
+The member has no `test` arm; `gnn` is its executable content check. Keep bundle
+wording aligned with the linked sources when editing the learning plan.
