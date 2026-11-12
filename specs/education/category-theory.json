@@ -1,0 +1,99 @@
+{
+  "schema": "education-contract/v1",
+  "provenance": {
+    "repository": "ActiveInferenceInstitute/ActiveInferenceCategoryTheory",
+    "revision": "64f21a8717fd3adf00e5feeb4b1765995c38efb5"
+  },
+  "units": [
+    {
+      "unit_id": "category-theory-introduction",
+      "title": "Introduction",
+      "objectives": [
+        {
+          "objective_id": "obj-1",
+          "statement": "Introductions to category theory, how it is used in Active Inference, and first exposure to category theory applied to neuroscience"
+        }
+      ],
+      "prerequisites": [],
+      "source_path": "IntroAdventureSyllabus.md"
+    },
+    {
+      "unit_id": "category-theory-foundations",
+      "title": "Foundations",
+      "objectives": [
+        {
+          "objective_id": "obj-1",
+          "statement": "Building intuition for basic category theory, reconnaissance of application to active inference"
+        }
+      ],
+      "prerequisites": [],
+      "source_path": "IntroAdventureSyllabus.md"
+    },
+    {
+      "unit_id": "category-theory-basic-category-theory",
+      "title": "Basic Category Theory",
+      "objectives": [
+        {
+          "objective_id": "obj-1",
+          "statement": "Basic category theory and introduction to 2-categories"
+        }
+      ],
+      "prerequisites": [],
+      "source_path": "IntroAdventureSyllabus.md"
+    },
+    {
+      "unit_id": "category-theory-higher-category-theory-and-application",
+      "title": "Higher category theory and application",
+      "objectives": [
+        {
+          "objective_id": "obj-1",
+          "statement": "Higher category theoretical concepts and ramp-up into Bayesian inference."
+        }
+      ],
+      "prerequisites": [],
+      "source_path": "IntroAdventureSyllabus.md"
+    },
+    {
+      "unit_id": "category-theory-connections",
+      "title": "Connections",
+      "objectives": [
+        {
+          "objective_id": "obj-1",
+          "statement": "Tying together Active Inference and category theory"
+        }
+      ],
+      "prerequisites": [],
+      "source_path": "IntroAdventureSyllabus.md"
+    },
+    {
+      "unit_id": "category-theory-pathways-forward",
+      "title": "Pathways forward",
+      "objectives": [
+        {
+          "objective_id": "obj-1",
+          "statement": "Further areas to explore"
+        }
+      ],
+      "prerequisites": [],
+      "source_path": "IntroAdventureSyllabus.md"
+    },
+    {
+      "unit_id": "category-theory-map-the-model",
+      "title": "Map the Model — a GNN scaffold for the Connections unit",
+      "objectives": [
+        {
+          "objective_id": "obj-1",
+          "statement": "Do one perception update by hand"
+        },
+        {
+          "objective_id": "obj-2",
+          "statement": "Copy the specification file, rename it, and answer for your own model:"
+        }
+      ],
+      "prerequisites": [],
+      "source_path": "gnn/map_the_model.template.md"
+    }
+  ],
+  "prerequisite_edges": [],
+  "glossary": []
+}
