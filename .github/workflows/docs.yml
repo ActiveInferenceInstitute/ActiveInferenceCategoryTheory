@@ -14,7 +14,8 @@ concurrency:
 
 # One job, one environment. Every check is an arm of ./run.sh, so the workflow
 # holds no copy of a command: checkout, interpreter, and installs happen once
-# for both the offline documentation gate and the pinned GNN conformance check.
+# for the offline documentation gate, the hermetic gate unit tests, and the
+# pinned GNN conformance check.
 jobs:
   gate:
     name: docs gate
@@ -38,5 +39,7 @@ jobs:
         run: ./run.sh setup
       - name: links and metadata
         run: ./run.sh docs
+      - name: gate unit tests (hermetic)
+        run: ./run.sh tests
       - name: gnn conformance (pinned)
         run: ./run.sh gnn

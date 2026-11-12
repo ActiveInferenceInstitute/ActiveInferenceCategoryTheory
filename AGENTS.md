@@ -27,6 +27,7 @@ holds no copy of a command. See [`docs/run-guide.md`](docs/run-guide.md).
 | `links` | `./run.sh links` | `.` | No |
 | `metadata` | `./run.sh metadata` | `.` | No |
 | `index` | `./run.sh index` | `.` | No |
+| `tests` | `./run.sh tests` | `.` | No |
 | `gnn` | `./run.sh setup && ./run.sh gnn` | `.` | Yes |
 | `measure` | `./run.sh measure` | `.` | Yes |
 
@@ -34,7 +35,9 @@ The `docs` arm checks relative Markdown links and images, tracked YAML, the
 `CITATION.cff` metadata fields, and that every tracked Markdown document appears
 in [`docs/documentation-index.md`](docs/documentation-index.md). Its only
 dependency is PyYAML (`python3 -m pip install pyyaml==6.0.2`); it needs no
-network and no Lean toolchain. The `gnn` arm installs the parser pinned in
+network and no Lean toolchain. The `tests` arm runs the gate scripts' unit tests
+with the GNN parser stubbed, so it needs only the standard library. The `gnn` arm
+installs the parser pinned in
 [`.github/gnn-pin.json`](.github/gnn-pin.json) and type-checks
 `gnn/learner_perception_model.md`. The `measure` arm regenerates
 [`docs/arm-runtimes.md`](docs/arm-runtimes.md), the only home for measured

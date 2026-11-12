@@ -17,38 +17,45 @@ tables and prose below are rendered from them.
     {
       "arm": "docs",
       "command": "./run.sh docs",
-      "seconds": 0.21,
+      "seconds": 0.08,
+      "status": "ok"
+    },
+    {
+      "arm": "tests",
+      "command": "./run.sh tests",
+      "seconds": 0.05,
       "status": "ok"
     },
     {
       "arm": "gnn",
       "command": "./run.sh gnn",
-      "seconds": 0.17,
+      "seconds": 0.13,
       "status": "ok"
     },
     {
       "arm": "all",
       "command": "./run.sh all",
-      "seconds": 0.37,
+      "seconds": 0.25,
       "status": "ok"
     }
   ],
   "host": "darwin arm64",
-  "measured": "2026-11-12T13:00:24Z",
-  "python": "3.12.16"
+  "measured": "2026-11-12T19:39:06Z",
+  "python": "3.14.10"
 }
 <!-- receipt:end -->
 
 | Arm | Command | Wall time (s) | Status |
 | --- | --- | --- | --- |
-| `docs` | `./run.sh docs` | 0.21 | ok |
-| `gnn` | `./run.sh gnn` | 0.17 | ok |
-| `all` | `./run.sh all` | 0.37 | ok |
+| `docs` | `./run.sh docs` | 0.08 | ok |
+| `tests` | `./run.sh tests` | 0.05 | ok |
+| `gnn` | `./run.sh gnn` | 0.13 | ok |
+| `all` | `./run.sh all` | 0.25 | ok |
 
-Measured 2026-11-12T13:00:24Z on darwin arm64, Python 3.12.16: one run of each arm, no warm-up.
+Measured 2026-11-12T19:39:06Z on darwin arm64, Python 3.14.10: one run of each arm, no warm-up.
 
-The arms above sum to 0.38 s, and `./run.sh all` runs `docs` and `gnn`
-back to back. `setup` is provisioning, not a check, so it is not timed here.
+The arms above sum to 0.26 s, and `./run.sh all` runs `docs`, `tests` and
+`gnn` back to back. `setup` is provisioning, not a check, so it is not timed here.
 
 `setup` installs
 [`../.github/requirements-gate.txt`](../.github/requirements-gate.txt) and the

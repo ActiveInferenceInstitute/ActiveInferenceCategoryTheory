@@ -1,22 +1,23 @@
 # Documentation gate
 
 This repository has no runtime, so its only executable checks are the arms of
-[`../run.sh`](../run.sh). CI runs two of them on every pull request and on
-pushes to `main`; they are also the repository's declared `docs` and `gnn` tasks
-(see [`../AGENTS.md`](../AGENTS.md)). [`run-guide.md`](run-guide.md) is the
-authoritative list of every arm.
+[`../run.sh`](../run.sh). CI runs three of them on every pull request and on
+pushes to `main`; they are also the repository's declared `docs`, `tests`, and
+`gnn` tasks (see [`../AGENTS.md`](../AGENTS.md)). [`run-guide.md`](run-guide.md)
+is the authoritative list of every arm.
 
 ## Where it runs
 
 [`.github/workflows/docs.yml`](../.github/workflows/docs.yml) defines one job,
-`gate`, displayed as `docs gate`, with two check steps:
+`gate`, displayed as `docs gate`, with three check steps:
 
 | Step | Arm | What it does | Needs network |
 | --- | --- | --- | --- |
 | `links and metadata` | `./run.sh docs` | [`check_docs.py`](../.github/scripts/check_docs.py): links, YAML and CFF metadata, documentation-index coverage. | No |
+| `gate unit tests (hermetic)` | `./run.sh tests` | [`tests/test_check_gnn.py`](../.github/scripts/tests/test_check_gnn.py): asserts `True` passes and `2` or `False` fails, with the parser stubbed. | No |
 | `gnn conformance (pinned)` | `./run.sh gnn` | [`check_gnn.py`](../.github/scripts/check_gnn.py): parses and type-checks the model against the pinned parser. | Yes, to install |
 
-Both steps share one checkout, one interpreter, and one environment: the job
+The steps share one checkout, one interpreter, and one environment: the job
 creates it with `uv venv --seed` and provisions it with `./run.sh setup`, which
 installs [`../.github/requirements-gate.txt`](../.github/requirements-gate.txt)
 and the parser pinned in [`../.github/gnn-pin.json`](../.github/gnn-pin.json).
@@ -59,6 +60,15 @@ A passing run prints `checked N tracked files: links, metadata, index ok`.
 If PyYAML is missing, the `metadata` check exits with code 2 and prints the install
 line above instead of reporting a YAML error, so a missing dependency is never
 mistaken for invalid metadata.
+
+The gate's own unit tests need only the standard library:
+
+```bash
+./run.sh tests
+```
+
+They stub the `gnn` parser, so they run without the environment that
+`./run.sh setup` provisions and without network access.
 
 ## Failure proof
 

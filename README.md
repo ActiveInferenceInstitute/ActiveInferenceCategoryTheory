@@ -23,8 +23,9 @@ Machine-readable citation metadata is available in [CITATION.cff](CITATION.cff).
 
 [`run.sh`](run.sh) is the single entry point for every check; each arm is the
 exact command CI runs. [`.github/workflows/docs.yml`](.github/workflows/docs.yml)
-runs two of them in one job, `docs gate`, on every pull request and on pushes to
-`main`: `./run.sh docs` (step `links and metadata`) and `./run.sh gnn` (step
+runs three of them in one job, `docs gate`, on every pull request and on pushes
+to `main`: `./run.sh docs` (step `links and metadata`), `./run.sh tests` (step
+`gate unit tests (hermetic)`), and `./run.sh gnn` (step
 `gnn conformance (pinned)`).
 
 `./run.sh docs` fails, with exit code 1, when a relative Markdown link or image
@@ -81,5 +82,6 @@ python3 -B ../courses/software/scripts/check_education_contract.py
 ./run.sh gnn
 ```
 
-The member has no `test` arm; `gnn` is its executable content check. Keep bundle
-wording aligned with the linked sources when editing the learning plan.
+`gnn` is the member's executable content check; the `tests` arm covers the gate
+scripts themselves and asserts nothing about the bundle. Keep bundle wording
+aligned with the linked sources when editing the learning plan.

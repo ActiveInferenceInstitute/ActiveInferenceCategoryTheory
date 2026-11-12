@@ -26,15 +26,18 @@ records:
 | `revision` | `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1` |
 | `recorded` | `2026-11-12` |
 
-`./run.sh setup` installs exactly that revision; `./run.sh gnn` then asserts the
-imported `gnn.__version__` matches `tag`, parses
+`./run.sh setup` validates the pin record (repository, tag shape, 40-hex
+revision) before it installs anything, then installs exactly that revision;
+`./run.sh gnn` validates the same record before it imports the parser, then
+asserts the imported `gnn.__version__` matches `tag`, parses
 `gnn/learner_perception_model.md`, checks its syntax, and runs the GNN type
-checker with `strict=True`. Both scripts validate the pin record first
-(repository, tag shape, 40-hex revision) and stop with a message if it is
-malformed. `validate_gnn_files` returns `True` when every file validates, `2` when
+checker with `strict=True`. A malformed pin record stops either script with a
+message. `validate_gnn_files` returns `True` when every file validates, `2` when
 files are invalid or none were found, and `False` on a hard failure; the job
-requires exactly `True`, so a `2` fails the arm instead of passing as truthy. In CI both commands are steps of the `gate` job, the second named
-`gnn conformance (pinned)`.
+requires exactly `True`, so a `2` fails the arm instead of passing as truthy.
+`./run.sh tests` pins that contract down offline: it stubs the parser and checks
+all three outcomes. In CI `setup`, `docs`, `tests`, and `gnn` are steps of the
+`gate` job, the last named `gnn conformance (pinned)`.
 
 Change the pin only when the conformance target intentionally moves, and
 re-verify the model afterwards: [`../.github/README.md`](../.github/README.md)
