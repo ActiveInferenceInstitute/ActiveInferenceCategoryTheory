@@ -9,6 +9,7 @@ There is no application code here; the only script is the documentation gate.
 | [`scripts/check_docs.py`](scripts/check_docs.py) | Validates relative Markdown links, tracked YAML, and `CITATION.cff` keys. |
 | [`gnn-pin.json`](gnn-pin.json) | The pinned Generalized Notation Notation revision (`v5.0.3`, commit `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`) used by the conformance job. |
 | [`dependabot.yml`](dependabot.yml) | Dependabot configuration for GitHub Actions updates. |
+| [`GNN.md`](GNN.md) | Pointer to the pinned GNN conformance check: the model source it validates and why that file is not named `*.gnn.md`. |
 
 ## Running the gate locally
 
