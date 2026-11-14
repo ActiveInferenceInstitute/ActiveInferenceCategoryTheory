@@ -3,8 +3,8 @@
 
 Three checks, selectable with ``--only`` and all of which can fail:
 
-1. ``links`` — every relative Markdown link or image target resolves to a path
-   inside the repository that exists at the checked-out commit.
+1. ``links`` — every relative Markdown link or image resolves inside the
+   repository to a tracked file or a directory with tracked descendants.
 2. ``metadata`` — every tracked YAML file (including CITATION.cff) parses as
    YAML, and CITATION.cff carries the required Citation File Format keys.
 3. ``index`` — every tracked Markdown document is reachable from the flat
@@ -50,37 +50,82 @@ def link_target(raw: str) -> str:
     return parts[0] if parts else ""
 
 
+def _relative_target(raw: str) -> str | None:
+    target = link_target(raw)
+    if not target or target.startswith("#") or SCHEME.match(target):
+        return None
+    # An encoded '#' belongs to a filename, not to the URI fragment.
+    base = target.split("#", 1)[0]
+    return unquote(base) if base else None
+
+
+def _tracked_inventory(files: list[Path], root: Path) -> tuple[set[Path], set[Path]]:
+    tracked = {root / path.relative_to(ROOT) for path in files}
+    directories = {
+        parent for path in tracked for parent in path.parents
+        if parent.is_relative_to(root)
+    }
+    return tracked, directories
+
+
+def _resolve_tracked_target(
+    path: Path, root: Path, tracked: set[Path], directories: set[Path],
+) -> Path:
+    """Admit the resolved target and every symlink dependency in its path."""
+    try:
+        resolved = path.resolve(strict=True)
+    except (FileNotFoundError, NotADirectoryError) as exc:
+        raise ValueError("missing link target") from exc
+    except (OSError, RuntimeError, ValueError) as exc:
+        raise ValueError("cannot resolve link target") from exc
+    if not resolved.is_relative_to(root):
+        raise ValueError("link escapes repository")
+    for component in (path, *path.parents):
+        if component == root:
+            break
+        if component.is_symlink():
+            # Resolving only the final filename would admit untracked aliases.
+            if component.parent.resolve(strict=True) / component.name not in tracked:
+                raise ValueError("link depends on an untracked symlink")
+            _resolve_tracked_target(
+                component.parent / component.readlink(), root, tracked, directories,
+            )
+    if resolved.is_file() and resolved in tracked:
+        return resolved
+    if resolved.is_dir() and resolved in directories:
+        return resolved
+    raise ValueError("untracked link target")
+
+
 def relative_targets(path: Path) -> list[str]:
     """Return the in-repository target of every relative link in one file."""
     text = path.read_text(encoding="utf-8")
     targets = INLINE_LINK.findall(text) + REFERENCE_LINK.findall(text)
-    relatives = []
-    for raw in targets:
-        target = unquote(link_target(raw))
-        if not target or target.startswith("#") or SCHEME.match(target):
-            continue
-        base = target.split("#", 1)[0]
-        if base:
-            relatives.append(raw)
-    return relatives
+    return [raw for raw in targets if _relative_target(raw) is not None]
 
 
 def check_links(files: list[Path]) -> list[str]:
     errors: list[str] = []
     resolved_root = ROOT.resolve()
+    tracked, directories = _tracked_inventory(files, resolved_root)
     for path in files:
         if path.suffix.lower() not in MARKDOWN_SUFFIXES:
             continue
-        for raw in relative_targets(path):
-            base = unquote(link_target(raw)).split("#", 1)[0]
-            resolved = (path.parent / base).resolve()
+        source = resolved_root / path.relative_to(ROOT)
+        try:
+            _resolve_tracked_target(source, resolved_root, tracked, directories)
+        except ValueError as exc:
+            errors.append(f"{path.relative_to(ROOT)}: cannot inspect document: {exc}")
+            continue
+        for raw in relative_targets(source):
+            base = _relative_target(raw)
+            assert base is not None
             try:
-                resolved.relative_to(resolved_root)
-            except ValueError:
-                errors.append(f"{path.relative_to(ROOT)}: link escapes repository: {raw}")
-                continue
-            if not resolved.exists():
-                errors.append(f"{path.relative_to(ROOT)}: missing link target: {raw}")
+                _resolve_tracked_target(
+                    source.parent / base, resolved_root, tracked, directories,
+                )
+            except ValueError as exc:
+                errors.append(f"{path.relative_to(ROOT)}: {exc}: {raw}")
     return errors
 
 
@@ -109,17 +154,38 @@ def check_index(files: list[Path]) -> list[str]:
     index = ROOT / INDEX_DOC
     if not index.is_file():
         return [f"{INDEX_DOC}: missing documentation index"]
-    listed = {
-        (index.parent / unquote(link_target(raw)).split("#", 1)[0]).resolve()
-        for raw in relative_targets(index)
-    }
+    resolved_root = ROOT.resolve()
+    tracked, directories = _tracked_inventory(files, resolved_root)
+    index = resolved_root / INDEX_DOC
+    try:
+        resolved_index = _resolve_tracked_target(index, resolved_root, tracked, directories)
+    except ValueError as exc:
+        return [f"{INDEX_DOC}: cannot inspect documentation index: {exc}"]
+    listed = set()
+    for raw in relative_targets(index):
+        try:
+            base = _relative_target(raw)
+            assert base is not None
+            listed.add(_resolve_tracked_target(
+                index.parent / base, resolved_root, tracked, directories,
+            ))
+        except ValueError:
+            # Invalid links cannot satisfy coverage; the links arm reports them.
+            continue
     errors: list[str] = []
     for path in files:
         if path.suffix.lower() not in MARKDOWN_SUFFIXES:
             continue
-        if path.resolve() == index.resolve():
+        try:
+            resolved = _resolve_tracked_target(
+                resolved_root / path.relative_to(ROOT), resolved_root, tracked, directories,
+            )
+        except ValueError as exc:
+            errors.append(f"{path.relative_to(ROOT)}: cannot inspect document: {exc}")
             continue
-        if path.resolve() not in listed:
+        if resolved == resolved_index:
+            continue
+        if resolved not in listed:
             errors.append(
                 f"{path.relative_to(ROOT)}: not listed in {INDEX_DOC}"
             )

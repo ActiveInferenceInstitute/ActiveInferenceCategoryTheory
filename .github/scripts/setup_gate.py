@@ -13,30 +13,15 @@ change: ``./run.sh docs`` uses a Python that already has PyYAML.
 from __future__ import annotations
 
 import json
-import re
 import subprocess
 import sys
 from pathlib import Path
 
+import gnn_pin_contract
+
 ROOT = Path(__file__).resolve().parents[2]
 REQUIREMENTS = ROOT / ".github" / "requirements-gate.txt"
 PIN = ROOT / ".github" / "gnn-pin.json"
-
-
-def load_pin(path: Path = PIN) -> dict[str, str]:
-    """Read the pin record and refuse a malformed one before it is used."""
-    pin = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(pin, dict):
-        raise SystemExit(f"{path} must contain a JSON object")
-    if pin.get("repository") != "ActiveInferenceInstitute/Generalized_Notation_Notation":
-        raise SystemExit(f"{path}: unexpected GNN repository {pin.get('repository')!r}")
-    tag = pin.get("tag")
-    if not isinstance(tag, str) or not re.fullmatch(r"v?\d+\.\d+\.\d+", tag):
-        raise SystemExit(f"{path}: GNN tag {tag!r} must match v?MAJOR.MINOR.PATCH")
-    revision = pin.get("revision")
-    if not isinstance(revision, str) or not re.fullmatch(r"[0-9a-f]{40}", revision):
-        raise SystemExit(f"{path}: GNN revision must be a 40-character lowercase SHA")
-    return pin
 
 
 def install(*args: str) -> None:
@@ -47,7 +32,7 @@ def install(*args: str) -> None:
 
 
 def main() -> int:
-    pin = load_pin()
+    pin = gnn_pin_contract.load_pin(PIN)
     install("-r", str(REQUIREMENTS))
     spec = (
         "generalized-notation-notation @ "

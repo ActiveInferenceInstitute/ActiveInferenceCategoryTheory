@@ -83,3 +83,11 @@ These materials are dedicated to the public domain under
 [CC0 1.0](../LICENSE), like the rest of the repository, per
 [CONTRIBUTING.md](../CONTRIBUTING.md). The GNN file format belongs to the GNN
 project (MIT-licensed); the specification here is original to this repository.
+
+## Pin admission boundary
+
+`gnn_pin_contract.load_pin` admits the supported legacy schema, exact repository,
+tag shape, and lowercase 40-character revision before provisioning or parser
+import. This is record admission, not installed-source authentication.
+The conformance checker requires the literal result `True`; `2` and `False`
+are not passes.

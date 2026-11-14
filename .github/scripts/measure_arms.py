@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import platform
 import re
 import subprocess
@@ -31,17 +32,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 DOC = ROOT / "docs" / "arm-runtimes.md"
 SCRIPTS = ROOT / ".github" / "scripts"
+PYTHON = sys.executable
 
 # Only the check arms are timed. `setup` is provisioning: its wall time is
 # dominated by cache and network state, so a single run would report noise as a
 # measurement. The baseline receipt records provisioning once, with conditions.
 ARMS: dict[str, tuple[list[str], str]] = {
-    "docs": ([sys.executable, str(SCRIPTS / "check_docs.py")], "./run.sh docs"),
+    "docs": ([PYTHON, str(SCRIPTS / "check_docs.py")], "./run.sh docs"),
     "tests": (
-        [sys.executable, "-m", "unittest", "discover", "-s", str(SCRIPTS / "tests")],
+        [PYTHON, "-m", "unittest", "discover", "-s", str(SCRIPTS / "tests")],
         "./run.sh tests",
     ),
-    "gnn": ([sys.executable, str(SCRIPTS / "check_gnn.py")], "./run.sh gnn"),
+    "gnn": ([PYTHON, str(SCRIPTS / "check_gnn.py")], "./run.sh gnn"),
 }
 ALL_COMMAND = "./run.sh all"
 RECEIPT_ORDER = [*ARMS, "all"]
@@ -92,7 +94,10 @@ DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 def measure(command: list[str]) -> tuple[float, int]:
     started = time.perf_counter()
-    result = subprocess.run(command, capture_output=True, text=True, cwd=ROOT)
+    result = subprocess.run(
+        command, capture_output=True, text=True, cwd=ROOT,
+        env={**os.environ, "PYTHON": PYTHON},
+    )
     elapsed = time.perf_counter() - started
     if result.returncode not in (0, 2):
         sys.stderr.write(result.stdout + result.stderr)
@@ -100,26 +105,26 @@ def measure(command: list[str]) -> tuple[float, int]:
     return round(elapsed, 2), result.returncode
 
 
+def _measured_row(name: str, display: str, seconds: float, code: int) -> dict:
+    """Keep individual and aggregate unavailability under the same contract."""
+    return {
+        "arm": name,
+        "command": display,
+        "seconds": seconds if code == 0 else None,
+        "status": "ok" if code == 0 else "not installed; run `./run.sh setup`",
+    }
+
+
 def run_arms() -> dict:
     """Run every arm once and return the receipt that records the result."""
     rows = []
     for name, (command, display) in ARMS.items():
         seconds, code = measure(command)
-        if code == 2:
-            rows.append(
-                {
-                    "arm": name,
-                    "command": display,
-                    "seconds": None,
-                    "status": "not installed; run `./run.sh setup`",
-                }
-            )
-        else:
-            rows.append({"arm": name, "command": display, "seconds": seconds, "status": "ok"})
+        rows.append(_measured_row(name, display, seconds, code))
 
     if all(row["seconds"] is not None for row in rows):
-        seconds, _ = measure([str(ROOT / "run.sh"), "all"])
-        rows.append({"arm": "all", "command": ALL_COMMAND, "seconds": seconds, "status": "ok"})
+        seconds, code = measure([str(ROOT / "run.sh"), "all"])
+        rows.append(_measured_row("all", ALL_COMMAND, seconds, code))
     else:
         rows.append(
             {

@@ -28,7 +28,7 @@ holds no copy of a command. See [`docs/run-guide.md`](docs/run-guide.md).
 | `metadata` | `./run.sh metadata` | `.` | No |
 | `index` | `./run.sh index` | `.` | No |
 | `tests` | `./run.sh tests` | `.` | No |
-| `gnn` | `./run.sh setup && ./run.sh gnn` | `.` | Yes |
+| `gnn` | `./run.sh gnn` | `.` | No; parser must already be provisioned |
 | `measure` | `./run.sh measure` | `.` | Yes |
 
 The `docs` arm checks relative Markdown links and images, tracked YAML, the
@@ -36,12 +36,13 @@ The `docs` arm checks relative Markdown links and images, tracked YAML, the
 in [`docs/documentation-index.md`](docs/documentation-index.md). Its only
 dependency is PyYAML (`python3 -m pip install pyyaml==6.0.2`); it needs no
 network and no Lean toolchain. The `tests` arm runs the gate scripts' unit tests
-with the GNN parser stubbed, so it needs only the standard library. The `gnn` arm
-installs the parser pinned in
-[`.github/gnn-pin.json`](.github/gnn-pin.json) and type-checks
-`gnn/learner_perception_model.md`. The `measure` arm regenerates
-[`docs/arm-runtimes.md`](docs/arm-runtimes.md), the only home for measured
-numbers.
+with the GNN parser isolated, so it needs only the standard library. The `gnn`
+arm validates `gnn/learner_perception_model.md` against the parser pinned in
+[`.github/gnn-pin.json`](.github/gnn-pin.json). The separate `setup` arm provisions
+requirements and that parser after shared pin admission; `gnn` itself installs
+nothing. The `measure` arm refreshes
+[`docs/arm-runtimes.md`](docs/arm-runtimes.md). `measure --check` validates existing
+receipts without executing an arm.
 
 ## InstituteOS sidecar
 
