@@ -20,6 +20,7 @@ import sys
 import types
 import unittest
 from pathlib import Path
+from unittest import mock
 
 SCRIPTS = Path(__file__).resolve().parents[1]
 ROOT = SCRIPTS.parents[1]
@@ -34,7 +35,8 @@ def load_gate() -> types.ModuleType:
     )
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    with mock.patch.object(sys, "path", [str(SCRIPTS), *sys.path]):
+        spec.loader.exec_module(module)
     return module
 
 
