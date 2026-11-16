@@ -18,8 +18,8 @@ stubs the pinned parser, so it needs no wheel and no network.
 | `links` | `./run.sh links` | Every relative Markdown link and image target resolves inside the repository. | No |
 | `metadata` | `./run.sh metadata` | Every tracked YAML file and `CITATION.cff` parses; the required CFF keys exist. | No |
 | `index` | `./run.sh index` | Every tracked Markdown document appears in [`documentation-index.md`](documentation-index.md). | No |
-| `tests` | `./run.sh tests` | The gate scripts' unit tests: [`test_check_gnn.py`](../.github/scripts/tests/test_check_gnn.py) drives `check_gnn.py` through all three type-checker outcomes with the parser stubbed. | No |
-| `gnn` | `./run.sh gnn` | `gnn/learner_perception_model.md` parses and type-checks against the pinned parser. | Only to install |
+| `tests` | `./run.sh tests` | Hermetic pin-admission, tracked-link, measurement, and literal GNN-result contracts; no real parser qualification. | No |
+| `gnn` | `./run.sh gnn` | `gnn/learner_perception_model.md` parses and type-checks against the already provisioned pinned parser. | No |
 | `setup` | `./run.sh setup` | Validates the pin record, then installs [`../.github/requirements-gate.txt`](../.github/requirements-gate.txt) and the parser pinned in [`../.github/gnn-pin.json`](../.github/gnn-pin.json). | Yes |
 | `all` | `./run.sh all` | `docs`, `tests`, then `gnn`. | As above |
 | `measure` | `./run.sh measure` | Refreshes the current receipt in [`arm-runtimes.md`](arm-runtimes.md); `--check` validates the receipts and re-renders without running anything. | Refresh only |
@@ -67,3 +67,13 @@ so its numbers cannot be re-measured.
   reproduce a failure.
 - [`gnn-materials.md`](gnn-materials.md) — the pinned revision and the model.
 - [`../.github/README.md`](../.github/README.md) — the automation folder guide.
+
+## Measurement outcome and interpreter contract
+
+Measurement captures its running interpreter and passes that executable as
+`PYTHON` to all child arms, including aggregate `run.sh all`. Individual and
+aggregate exit 2 remain unavailable without successful timing values.
+Unexpected nonzero exits abort publication rather than overwriting prior
+receipts with success. Historical measurements remain attributed to their
+original source. `--check` validates stored evidence; it does not execute new
+measurements.

@@ -20,35 +20,20 @@ The model source is ``gnn/learner_perception_model.md``. That file is not named
 from __future__ import annotations
 
 import json
-import re
 import shutil
 import sys
 import tempfile
 from pathlib import Path
+
+import gnn_pin_contract
 
 ROOT = Path(__file__).resolve().parents[2]
 PIN = ROOT / ".github" / "gnn-pin.json"
 MODEL = ROOT / "gnn" / "learner_perception_model.md"
 
 
-def load_pin(path: Path = PIN) -> dict[str, str]:
-    """Read the pin record and refuse a malformed one before it is used."""
-    pin = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(pin, dict):
-        raise SystemExit(f"{path} must contain a JSON object")
-    if pin.get("repository") != "ActiveInferenceInstitute/Generalized_Notation_Notation":
-        raise SystemExit(f"{path}: unexpected GNN repository {pin.get('repository')!r}")
-    tag = pin.get("tag")
-    if not isinstance(tag, str) or not re.fullmatch(r"v?\d+\.\d+\.\d+", tag):
-        raise SystemExit(f"{path}: GNN tag {tag!r} must match v?MAJOR.MINOR.PATCH")
-    revision = pin.get("revision")
-    if not isinstance(revision, str) or not re.fullmatch(r"[0-9a-f]{40}", revision):
-        raise SystemExit(f"{path}: GNN revision must be a 40-character lowercase SHA")
-    return pin
-
-
 def main() -> int:
-    pin = load_pin()
+    pin = gnn_pin_contract.load_pin(PIN)
     try:
         from gnn import __version__
         from gnn.parsers.basic import parse_gnn_formal, validate_gnn_syntax

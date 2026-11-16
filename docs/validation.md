@@ -1,10 +1,9 @@
 # Documentation gate
 
-This repository has no runtime, so its only executable checks are the arms of
-[`../run.sh`](../run.sh). CI runs three of them on every pull request and on
-pushes to `main`; they are also the repository's declared `docs`, `tests`, and
-`gnn` tasks (see [`../AGENTS.md`](../AGENTS.md)). [`run-guide.md`](run-guide.md)
-is the authoritative list of every arm.
+The repository's executable checks are Python/Bash arms of
+[`run.sh`](../run.sh), not an application runtime. CI runs `docs`, `tests`, and
+`gnn` on pull requests and pushes to `main`; see
+[`AGENTS.md`](../AGENTS.md) and the authoritative [run guide](run-guide.md).
 
 ## Where it runs
 
@@ -14,8 +13,8 @@ is the authoritative list of every arm.
 | Step | Arm | What it does | Needs network |
 | --- | --- | --- | --- |
 | `links and metadata` | `./run.sh docs` | [`check_docs.py`](../.github/scripts/check_docs.py): links, YAML and CFF metadata, documentation-index coverage. | No |
-| `gate unit tests (hermetic)` | `./run.sh tests` | [`tests/test_check_gnn.py`](../.github/scripts/tests/test_check_gnn.py): asserts `True` passes and `2` or `False` fails, with the parser stubbed. | No |
-| `gnn conformance (pinned)` | `./run.sh gnn` | [`check_gnn.py`](../.github/scripts/check_gnn.py): parses and type-checks the model against the pinned parser. | Yes, to install |
+| `gate unit tests (hermetic)` | `./run.sh tests` | Offline contracts for pin admission, tracked links, measurement outcomes, and literal GNN conformance results. | No |
+| `gnn conformance (pinned)` | `./run.sh gnn` | [`check_gnn.py`](../.github/scripts/check_gnn.py): parses and type-checks the model against the already provisioned parser. | No |
 
 The steps share one checkout, one interpreter, and one environment: the job
 creates it with `uv venv --seed` and provisions it with `./run.sh setup`, which
@@ -31,9 +30,9 @@ See [`gnn-materials.md`](gnn-materials.md) for the conformance step.
 
 It fails, with exit code 1, on any of four conditions:
 
-1. A relative Markdown link or image target does not resolve to a path inside the
-   repository that exists at the checked-out commit. Links may not escape the
-   repository; fragments (`#...`) and absolute URLs are ignored.
+1. A relative Markdown link or image target does not resolve inside the repository
+   to a tracked file or a directory with tracked descendants. Symlink dependencies
+   must also be admitted. Fragments and external URLs are not fetched.
 2. A tracked YAML file (including [`CITATION.cff`](../CITATION.cff)) does not
    parse as YAML.
 3. `CITATION.cff` lacks any of the required Citation File Format keys
@@ -77,3 +76,10 @@ The gate is known to be able to fail. CI run 41720066280, in the job then named
 followed by `##[error]Process completed with exit code 1`. That job was merged
 into `gate`; the step keeps the name `links and metadata`. The root
 [`README.md`](../README.md#documentation-gate) records the same reproduction.
+
+## Tracked-target admission
+
+Untracked aliases do not make untracked content portable. Missing, escaping,
+dangling, or looping paths fail. URL fragments are removed before percent
+decoding so encoded filename characters remain filename content. These are
+offline source checks, not scientific or external-link qualification.

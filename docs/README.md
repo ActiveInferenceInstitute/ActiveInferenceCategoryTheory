@@ -1,8 +1,9 @@
 # Documentation — ActiveInferenceCategoryTheory
 
-Documentation index for **`ActiveInferenceInstitute/ActiveInferenceCategoryTheory`**,
-a docs-only curriculum repository. There is no build step, package, or runtime:
-every file here is Markdown plus the metadata that the CI gate validates.
+Documentation index for **`ActiveInferenceInstitute/ActiveInferenceCategoryTheory`**:
+an authored curriculum and supporting metadata with Python and Bash validation
+gates. This is not an installable application package; its executable tooling
+requires an appropriate Python environment.
 
 Start with [`../README.md`](../README.md) for the repository overview and
 [`../IntroAdventureSyllabus.md`](../IntroAdventureSyllabus.md) for the curriculum
@@ -44,6 +45,16 @@ itself.
 
 See [`gnn-materials.md`](gnn-materials.md) for how these are verified.
 
+## Education publication inputs
+
+- [`education-contract.json`](../education-contract.json) — education contract pointer.
+- [`specs/education/schema.json`](../specs/education/schema.json) — selected education schema.
+- [`specs/education/category-theory.json`](../specs/education/category-theory.json) — seven authored learning units.
+
+These JSON inputs are outside the Markdown-only documentation index. A portable
+pinned education checker remains a producer dependency; metadata presence does
+not establish that a local education gate has run.
+
 ## Contributing and citation
 
 - [`../CONTRIBUTING.md`](../CONTRIBUTING.md) — how to propose changes.
@@ -60,12 +71,11 @@ See [`gnn-materials.md`](gnn-materials.md) for how these are verified.
 
 ## Status
 
-Everything in this repository works offline: there is no install step and no
-network call. The executable checks are the arms of [`../run.sh`](../run.sh),
-described in [`run-guide.md`](run-guide.md); the offline `docs` arm needs PyYAML,
-the offline `tests` arm needs nothing but the standard library, and
-[`validation.md`](validation.md) explains what they verify. CI runs one job,
-`docs gate`, that provisions one environment and then runs `./run.sh docs`,
-`./run.sh tests`, and `./run.sh gnn`. The conformance arm is the only check that
-needs network access, because it installs the pinned GNN parser; it is not
-required to work on a documentation change.
+The executable checks are arms of [`run.sh`](../run.sh), described in
+[`run-guide.md`](run-guide.md). Offline `docs` requires the declared PyYAML
+dependency; hermetic `tests` uses the standard library. The separate `setup` arm
+provisions requirements and the pinned GNN parser and may require network access.
+`gnn` validates against an already provisioned parser and installs nothing.
+CI provisions its environment before running the selected checks. A matching
+parser version and hermetic gate tests do not establish installed-source
+authenticity or scientific correctness.
