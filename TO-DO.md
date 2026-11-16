@@ -36,7 +36,7 @@ scoped by severity:
 - [x] ✓ Add `gnn/` (README, walk-through, model specification) and link it as item 4 of the *Map the model* activity in `IntroAdventureSyllabus.md`; list it in `README.md` and align the InstituteOS sidecar artifacts and `meta.updated`.
 - [x] ✓ Rename the walk-through to `gnn/map_the_model.template.md` (the GNN pipeline's `*.template.md` marker for non-model Markdown) after a directory-level run picked it up as a model and reported it invalid; a repeat run pointed at `gnn/` parses exactly one model source with no errors.
 - [x] ✓ Close the GNN checker fail-open in `.github/scripts/check_gnn.py`: `GNNTypeChecker.validate_gnn_files` returns `True` (all files valid), `2` (invalid files or no files found) or `False` (hard failure), and the old truthiness test let `2` pass. The job now calls it with `strict=True`, requires `is True`, prints the returned value as `type-checker-result`, and passes `is_content=True` to `validate_gnn_syntax`. `check_gnn.py` and `setup_gate.py` also validate the pin record (repository, tag shape, 40-hex revision) before use. The 22-format, 0-warning, 21-parameter counts come from the manual full-pipeline command, not from this job.
-- [ ] Re-verify the GNN references in `gnn/` when the pinned revision moves: the specification was parsed and type-checked against GNN v5.0.3 (commit `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`), and the walk-through quotes that run's counts.
+- [x] ✓ Re-verify the GNN references in `gnn/` when the pinned revision moves: re-run on 2026-11-16 against GNN v5.1.0 (commit `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`) with `--only-steps 3,5`; step 3 parsed 1 model file with 0 failures and serialized 22 formats, step 5 reported 1 valid file, 0 errors, 0 warnings and 21 parameters, so the quoted counts are unchanged and only the version and commit moved.
 - [ ] Re-check the hand-computed posteriors in `gnn/map_the_model.template.md` if the parameterization in `gnn/learner_perception_model.md` changes.
 
 ### 2026-11-11 — modular `docs/` tree
@@ -87,16 +87,16 @@ scoped by severity:
       checkout that is not vendored here. Owner: the `courses` lead repository
       (or InstituteOS) must publish a pinned checker; only then can an
       `education` arm and a `gate` step be added.
-- [ ] The pin trails the estate cutover: this repository pins `v5.0.3`
-      (`8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`) while the cutover pin is
-      `v5.1.0` (`75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`, as recorded in the
-      sibling `AEOS/.github/gnn-pin.json`). Bumping is a maintainer edit to
-      `.github/gnn-pin.json` plus a local `./run.sh setup && ./run.sh gnn`,
-      because GitHub Actions is billing-locked org-wide; the parse counts,
-      serialized-format count, and parameter total quoted in `gnn/README.md`,
-      `gnn/map_the_model.template.md`, `docs/gnn-materials.md`,
-      `.github/GNN.md`, `.github/README.md`, and `.aii/config.yaml` must be
-      re-measured against the new parser in the same change.
+- [x] ✓ The pin trailed the estate cutover (`v5.0.3`,
+      `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`). On 2026-11-16 it moved to
+      the cutover pin `v5.1.0` (`75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`) in
+      `.github/gnn-pin.json`, with `.github/GNN.md`, `.github/README.md`,
+      `docs/gnn-materials.md`, `gnn/README.md`,
+      `gnn/map_the_model.template.md`, `.aii/config.yaml` and
+      `.aii/docs/INTEGRATION.md` updated in the same change. Re-measured under
+      GNN 5.1.0: 1 model parsed, 0 parse failures, 22 serialized formats,
+      1 valid file, 0 errors, 0 warnings, 21 parameters (unchanged), and
+      `./run.sh docs`, `./run.sh tests` and `./run.sh gnn` pass locally.
 - [ ] `specs/` and `education-contract.json` are absent from the tables in
       `docs/repository-layout.md` and from `docs/README.md`; the `index` arm
       covers Markdown only, so it does not report the gap. Owner: documentation

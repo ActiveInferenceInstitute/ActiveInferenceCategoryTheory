@@ -22,9 +22,9 @@ records:
 | Field | Value |
 | --- | --- |
 | `repository` | `ActiveInferenceInstitute/Generalized_Notation_Notation` |
-| `tag` | `v5.0.3` |
-| `revision` | `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1` |
-| `recorded` | `2026-11-12` |
+| `tag` | `v5.1.0` |
+| `revision` | `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf` |
+| `recorded` | `2026-11-16` |
 
 `./run.sh setup` validates the pin record (repository, tag shape, 40-hex
 revision) before it installs anything, then installs exactly that revision;

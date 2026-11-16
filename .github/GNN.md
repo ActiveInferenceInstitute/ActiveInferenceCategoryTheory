@@ -4,8 +4,8 @@ The conformance check is the `./run.sh gnn` arm of [`../run.sh`](../run.sh), run
 in CI as the step `gnn conformance (pinned)` inside the `gate` job of
 `.github/workflows/docs.yml`. It reads `.github/gnn-pin.json` — schema
 `gnn-importer-pin/v1` — which pins
-`ActiveInferenceInstitute/Generalized_Notation_Notation` at `v5.0.3`
-(`8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`, recorded `2026-11-12`).
+`ActiveInferenceInstitute/Generalized_Notation_Notation` at `v5.1.0`
+(`75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`, recorded `2026-11-16`).
 
 The check asserts the installed `gnn.__version__` matches the pin's `tag`, then
 parses and type-checks the repository's model declaration,
