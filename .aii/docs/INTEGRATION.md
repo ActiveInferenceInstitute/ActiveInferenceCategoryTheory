@@ -42,7 +42,7 @@
 | `IntroAdventureSyllabus.md` | `doc` | Adventure-mode curriculum for category theory applied to active inference. |
 | `gnn/README.md` | `doc` | GNN materials for the Map the model activity. |
 | `gnn/map_the_model.template.md` | `doc` | Walk-through mapping category-theoretic notions onto a GNN model specification. |
-| `gnn/learner_perception_model.md` | `doc` | Two-state GNN perception model of the reader, parsed and type-checked against GNN v5.0.3. |
+| `gnn/learner_perception_model.md` | `doc` | Two-state GNN perception model of the reader, parsed and type-checked against GNN v5.1.0. |
 | `CONTRIBUTING.md` | `doc` | Contribution guide. |
 | `CITATION.cff` | `citation` | Machine-readable citation metadata. |
 | `LICENSE` | `doc` | License. |

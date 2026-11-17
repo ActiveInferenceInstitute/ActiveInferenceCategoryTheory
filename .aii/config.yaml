@@ -43,7 +43,7 @@ artifacts:
 - path: gnn/learner_perception_model.md
   kind: doc
   description: Two-state GNN perception model of the reader, parsed and type-checked
-    against GNN v5.0.3.
+    against GNN v5.1.0.
 - path: CONTRIBUTING.md
   kind: doc
   description: Contribution guide.

@@ -13,7 +13,7 @@ There is no application code here; the checks are thin Python scripts, and
 | [`scripts/setup_gate.py`](scripts/setup_gate.py) | Validates the pin record, then installs `requirements-gate.txt` and the parser pinned in `gnn-pin.json`. |
 | [`scripts/measure_arms.py`](scripts/measure_arms.py) | Measures each arm and writes the receipts and rendered tables in [`../docs/arm-runtimes.md`](../docs/arm-runtimes.md); `--check` validates the receipts and re-renders without running an arm. |
 | [`requirements-gate.txt`](requirements-gate.txt) | The one dependency set the `docs` and `gnn` arms share; the `tests` arm needs none. |
-| [`gnn-pin.json`](gnn-pin.json) | The pinned Generalized Notation Notation revision, schema `gnn-importer-pin/v1`: tag `v5.0.3`, commit `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`, recorded `2026-11-12`. |
+| [`gnn-pin.json`](gnn-pin.json) | The pinned Generalized Notation Notation revision, schema `gnn-importer-pin/v1`: tag `v5.1.0`, commit `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`, recorded `2026-11-16`. |
 | [`dependabot.yml`](dependabot.yml) | Dependabot configuration for GitHub Actions updates. |
 | [`GNN.md`](GNN.md) | Pointer to the pinned GNN conformance check: the model source it validates and why that file is not named `*.gnn.md`. |
 
