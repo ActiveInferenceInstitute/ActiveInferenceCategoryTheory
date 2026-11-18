@@ -40,7 +40,7 @@ all three outcomes. In CI `setup`, `docs`, `tests`, and `gnn` are steps of the
 `gate` job, the last named `gnn conformance (pinned)`.
 
 Change the pin only when the conformance target intentionally moves, and
-re-verify the model afterwards: [`../.github/README.md`](../.github/README.md)
+re-verify the model afterwards: [`../.github/AUTOMATION.md`](../.github/AUTOMATION.md)
 records that editing rule.
 
 ## Why the walk-through is named `*.template.md`

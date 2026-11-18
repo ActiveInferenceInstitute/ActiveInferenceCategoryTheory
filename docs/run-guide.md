@@ -66,7 +66,7 @@ so its numbers cannot be re-measured.
 - [`validation.md`](validation.md) — what each offline check does and how to
   reproduce a failure.
 - [`gnn-materials.md`](gnn-materials.md) — the pinned revision and the model.
-- [`../.github/README.md`](../.github/README.md) — the automation folder guide.
+- [`../.github/AUTOMATION.md`](../.github/AUTOMATION.md) — the automation folder guide.
 
 ## Measurement outcome and interpreter contract
 
