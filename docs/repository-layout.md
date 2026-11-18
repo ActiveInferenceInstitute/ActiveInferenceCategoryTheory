@@ -28,7 +28,7 @@ the tracked tree.
 | Path | Purpose |
 | --- | --- |
 | [`gnn/`](../gnn/README.md) | GNN materials for the *Map the model* activity: the model specification and the walk-through. See [`gnn-materials.md`](gnn-materials.md). |
-| [`.github/`](../.github/README.md) | Workflow, gate scripts, the pinned GNN revision, and Dependabot. See [`../.github/README.md`](../.github/README.md). |
+| [`.github/`](../.github/AUTOMATION.md) | Workflow, gate scripts, the pinned GNN revision, and Dependabot. See [`../.github/AUTOMATION.md`](../.github/AUTOMATION.md). |
 | `.aii/` | InstituteOS sidecar: curated institutional metadata (`aii-sidecar/v1`). See [`.aii/README.md`](../.aii/README.md). |
 | `specs/education/` | Education schema and authored learning-unit bundle; JSON is outside the Markdown-only documentation index. |
 

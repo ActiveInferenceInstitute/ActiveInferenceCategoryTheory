@@ -43,7 +43,7 @@ Start reading at [`../README.md`](../README.md) for the overview,
 
 | Document | Purpose | Kind |
 | --- | --- | --- |
-| [`../.github/README.md`](../.github/README.md) | The `.github/` folder guide: workflow, scripts, pin, Dependabot. | source |
+| [`../.github/AUTOMATION.md`](../.github/AUTOMATION.md) | The `.github/` folder guide: workflow, scripts, pin, Dependabot. | source |
 | [`../.github/GNN.md`](../.github/GNN.md) | Pointer recording what the conformance step parses and why. | source |
 
 ## Metadata and legal
